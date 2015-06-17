@@ -1,0 +1,8 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/home/cqi/projects/python-krbV'
+let g:netrw_dirhist_2='/home/cqi/projects/python-krbcontext'
+let g:netrw_dirhist_3='/home/cqi/projects/python-krbcontext/krbcontext'
+let g:netrw_dirhist_4='/home/cqi/projects/python-krbcontext'
+let g:netrw_dirhist_5='/home/cqi/.vim/bundle'
+let g:netrw_dirhist_6='/home/cqi/.vim'

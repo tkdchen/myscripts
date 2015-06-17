@@ -1,0 +1,15 @@
+[alias]
+	br = branch
+	st = status
+	cm = commit
+	co = checkout
+[color]
+	diff = true
+	status = true
+	branch = true
+	ui = true
+[user]
+	name = Chenxiong Qi
+	email = cqi@redhat.com
+[core]
+	editor = vim
