@@ -11,9 +11,15 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 Plugin 'scrooloose/nerdtree'
+Plugin 'vim-utils/vim-man'
 Plugin 'mileszs/ack.vim'
-Plugin 'powerline/powerline'
 Plugin 'tpope/vim-fugitive'
+
+Plugin 'chase/vim-ansible-yaml'
+Plugin 'kien/ctrlp.vim'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'bronson/vim-trailing-whitespace'
+Plugin 'scrooloose/syntastic'
 
 " For snippet
 Plugin 'MarcWeber/vim-addon-mw-utils'
@@ -31,6 +37,8 @@ Plugin 'DAddYE/soda.vim'
 Plugin 'jonathanfilip/vim-lucius'
 Plugin 'ekalinin/Dockerfile.vim'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'flazz/vim-colorschemes'
+
 
 call vundle#end()            " required
 
@@ -41,31 +49,38 @@ set expandtab
 set guioptions-=T
 set listchars=eol:$,tab:>-,trail:.
 set nohlsearch
+set nonumber
 set smartindent
-colorscheme jellybeans
+set relativenumber
 
 set cinoptions+=(0
 
+python from powerline.vim import setup as powerline_setup
+python powerline_setup()
+python del powerline_setup
+set laststatus=2
 set t_Co=256
 
 if has('gui_running')
-    set guifont=Source\ Code\ Pro\ Regular\ 12
+    set guifont=Monospace\ 13
 endif
 
 filetype plugin on
 autocmd BufRead,BufNewFile *.cpp set cindent
-autocmd BufRead,BufNewFile *.cpp set expandtab
-autocmd BufRead,BufNewFile *.cpp set shiftwidth=4
-autocmd BufRead,BufNewFile *.cpp set tabstop=4
-autocmd BufRead,BufNewFile *.c set cindent
-autocmd BufRead,BufNewFile *.c set expandtab
+autocmd BufRead,BufNewFile *.cpp set noexpandtab
+autocmd BufRead,BufNewFile *.cpp set shiftwidth=8
+autocmd BufRead,BufNewFile *.cpp set tabstop=8
 autocmd BufRead,BufNewFile *.c set foldmethod=syntax
-autocmd BufRead,BufNewFile *.c set shiftwidth=4
-autocmd BufRead,BufNewFile *.c set tabstop=4
+autocmd BufRead,BufNewFile *.c set cindent
+autocmd BufRead,BufNewFile *.c set foldmethod=syntax
+autocmd BufRead,BufNewFile *.c set noexpandtab
+autocmd BufRead,BufNewFile *.c set shiftwidth=8
+autocmd BufRead,BufNewFile *.c set tabstop=8
 autocmd BufRead,BufNewFile *.h set cindent
-autocmd BufRead,BufNewFile *.h set expandtab
-autocmd BufRead,BufNewFile *.h set shiftwidth=4
-autocmd BufRead,BufNewFile *.h set tabstop=4
+autocmd BufRead,BufNewFile *.h set foldmethod=syntax
+autocmd BufRead,BufNewFile *.h set noexpandtab
+autocmd BufRead,BufNewFile *.h set shiftwidth=8
+autocmd BufRead,BufNewFile *.h set tabstop=8
 autocmd BufRead,BufNewFile *.html set noexpandtab
 autocmd BufRead,BufNewFile *.html set shiftwidth=2
 autocmd BufRead,BufNewFile *.html set syntax=htmldjango
@@ -124,14 +139,6 @@ map <F3> :!acpi -b<CR>
 map <F4> :call QToggleListCharsShow()<CR>
 nnoremap <silent> <F5> :TlistToggle<CR>
 
-map <C-r>c :call RstHeadComplete()<CR>
-
-" Window operations
-map <C-w>0 :close<CR>
-map <C-w>1 :only<CR>
-map <C-w>c :copen<CR>
-map <C-w>l :cclose<CR>
-
 abbr rd rpmdiff
 abbr mb messagebus
 
@@ -149,6 +156,17 @@ endfunction
 
 " NERDTree
 " Single clike to expand and collaps directory
-let NERDTreeMouseMode=2
+" let NERDTreeMouseMode=2
+
+" Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+let g:syntastic_python_checkers = ['flake8']
 
 " Following functions are specific to particular projects
