@@ -1,9 +1,12 @@
+# vim: foldmethod=marker ts=4 sw=4 autoindent
 # .bashrc
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
+
+alias vim=nvim
 
 powerline-daemon -q
 POWERLINE_BASH_CONTINUATION=1
@@ -24,65 +27,46 @@ export GO111MODULE=on
 
 export REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
 export GIT_EDITOR=nvim
-export PYPI_INDEX=https://mirrors.aliyun.com/pypi/simple/
 
 alias ff='firefox'
 
-alias mygrep='grep --exclude=*.pyc --exclude=.git --exclude=.venv --color -rnH'
+alias grep='grep --exclude=*.pyc --exclude=.git --exclude=.venv --color'
 
 #alias docker=podman
-alias gitst='git status'
-alias gitdiff='git diff'
-alias gitst='git status'
-alias pinst='sudo dnf install'
-alias repoquery='sudo repoquery'
+
+# {{{ Git alias
+alias gita='git add'
+alias gitd='git diff'
+alias gits='git status'
 alias git-stats-commit-count-by-author='git log --format="%an" | sort | uniq -c | sort -k1 -n --reverse'
+alias git-show-top-patch='git log -p -1'
+alias git-sync-with-upstream='git checkout master && git fetch upstream && git merge upstream/master'
+# }}}
+
+alias pacup='sudo dnf update'
+alias paci='sudo dnf install'
+alias pacq='sudo dnf repoquery'
+
+# {{{ Git alias
+alias di='docker images'
+# }}}
 
 alias tox='tox --workdir /tmp/tox-$(basename $PWD)'
 
 alias my-bodhi-updates='bodhi updates query --user cqi'
 
-
-if [ ! -e "$HOME/virtualenvs" ]; then
-    mkdir "$HOME/virtualenvs"
-fi
-alias createvirtualenv='python3 -m venv $HOME/virtualenvs/$(basename $PWD)'
-alias virtualenvon='. $HOME/virtualenvs/$(basename $PWD)/bin/activate'
-alias virtualenvoff='deactivate'
+alias venvnew='${pybin:-python3} -m venv .venv'
+alias venvdrop='[ -e ".venv" ] && rm -r .venv'
+alias venvon='source ./.venv/bin/activate'
+alias venvoff='deactivate'
+alias venvi='python3 -m pip install'
 
 alias login-aliyun-vm='ssh root@123.57.27.187'
-
-VIRTUALENVS_ROOT=$HOME/virtualenvs/
-
-function prepare_venv
-{
-    local -r venv_path="${VIRTUALENVS_ROOT}$(basename $PWD)/"
-    local -r ycm_extra_conf=".ycm_extra_conf.py"
-
-    python3 -m venv "$venv_path"
-
-    if [ -e $ycm_extra_conf ]; then
-        echo "$ycm_extra_conf exists already. You may have to add following interpreter by yourself."
-        echo "${venv_path}bin/python3"
-    else
-        cat > $ycm_extra_conf <<EOF
-def Settings( **kwargs ):
-    return {
-        'interpreter_path': '${venv_path}bin/python3'
-    }
-EOF
-    fi
-
-    if [ -e .git ]; then
-        echo "$ycm_extra_conf" >> .git/info/exclude
-    else
-        echo "This is not a git repository. You have to ignore $ycm_extra_conf by yourself."
-    fi
-}
-
 alias dmenu_go='dmenu -fn "DejaVu Sans Mono-14"'
 
-function syncup-git-repo
+alias st='st -f "FuraCode Nerd Font Mono-14"'
+
+function g-sync-up-with-upstream
 {
     local -r branch=${1:-master}
     git fetch upstream
@@ -102,12 +86,14 @@ function q-notes-open
     [[ -n "$notefile" ]] && emacs "$HOME/Documents/My/notes/$notefile" &
 }
 
-function q-pypi-mirrors
+function pypi-mirrors-list
 {
-    echo "\
-https://pypi.tuna.tsinghua.edu.cn/simple
-https://mirrors.aliyun.com/pypi/simple/
-https://pypi.doubanio.com/simple
-https://mirrors.cloud.tencent.com/pypi/simple
-" | dmenu_go
+    declare -a fast_pypi_mirros
+    fast_pypi_mirros=(
+        https://pypi.tuna.tsinghua.edu.cn/simple
+        https://mirrors.aliyun.com/pypi/simple/
+        https://pypi.doubanio.com/simple
+        https://mirrors.cloud.tencent.com/pypi/simple
+    )
+    echo "${fast_pypi_mirros[@]}" | dmenu_go
 }
