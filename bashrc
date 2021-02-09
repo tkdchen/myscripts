@@ -66,6 +66,8 @@ alias dmenu_go='dmenu -fn "DejaVu Sans Mono-14"'
 
 alias st='st -f "FuraCode Nerd Font Mono-14"'
 
+alias pypi_download_source='python3 -m pip download --no-binary :all: --no-deps'
+
 function g-sync-up-with-upstream
 {
     local -r branch=${1:-master}
