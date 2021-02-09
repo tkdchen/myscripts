@@ -18,7 +18,6 @@ Plug 'Yggdroot/indentLine'
 Plug 'pearofducks/ansible-vim'
 Plug 'preservim/tagbar'
 " }}}
-
 " {{{ Filetypes
 Plug 'cespare/vim-toml'
 Plug 'ekalinin/Dockerfile.vim'
@@ -27,34 +26,28 @@ Plug 'marshallward/vim-restructuredtext'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'plasticboy/vim-markdown'
 " }}}
-
 " {{{ UI
 Plug 'ryanoasis/vim-devicons'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 " }}}
-
 " {{{ Python
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'vim-python/python-syntax'
 " }}}
-
 " {{{ GoLang
 " Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
 " }}}
-
 " {{{ JavaScript
 Plug 'pangloss/vim-javascript'
 Plug 'HerringtonDarkholme/yats.vim'  " Yet Another TypeScript Syntax
 " }}}
-
 " {{{ colorschemes
 Plug 'chriskempson/base16-vim'
 Plug 'joshdick/onedark.vim'
 Plug 'tomasiser/vim-code-dark'
 " }}}
-
 " {{{ Neovim LSP
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
@@ -93,31 +86,35 @@ let base16colorspace=256
 
 let mapleader=","
 
-colorscheme onedark
+colorscheme base16-gruvbox-dark-pale
 
 " {{{ General key mappings
 nnoremap                <F3>              /<c-r><c-w>
 " }}}
 
 " {{{ Settings for specific file types
+" {{{ HTML
 autocmd BufRead,BufNewFile *.html set filetype=htmldjango
 autocmd BufRead,BufNewFile *.html set noexpandtab
 autocmd BufRead,BufNewFile *.html set shiftwidth=2
 autocmd BufRead,BufNewFile *.html set tabstop=2
 autocmd BufRead,BufNewFile *.html set textwidth=0
+" }}}
+" {{{ JavaScript
 autocmd BufRead,BufNewFile *.js set expandtab
 autocmd BufRead,BufNewFile *.js set foldmethod=indent
 autocmd BufRead,BufNewFile *.js set shiftwidth=2
 autocmd BufRead,BufNewFile *.js set tabstop=2
 autocmd BufRead,BufNewFile *.js set textwidth=100
-
+" }}}
+" {{{ JSON
 autocmd BufRead,BufNewFile *.json set expandtab
 autocmd BufRead,BufNewFile *.json set foldmethod=indent
 autocmd BufRead,BufNewFile *.json set shiftwidth=2
 autocmd BufRead,BufNewFile *.json set tabstop=2
 autocmd BufRead,BufNewFile *.json set textwidth=0
-
-" YAML file
+" }}}
+" {{{ YAML file
 autocmd BufRead,BufNewFile *.yml set expandtab
 autocmd BufRead,BufNewFile *.yml set foldmethod=indent
 autocmd BufRead,BufNewFile *.yml set shiftwidth=2
@@ -128,6 +125,12 @@ autocmd BufRead,BufNewFile *.yaml set foldmethod=indent
 autocmd BufRead,BufNewFile *.yaml set shiftwidth=2
 autocmd BufRead,BufNewFile *.yaml set tabstop=2
 autocmd BufRead,BufNewFile *.yaml set textwidth=100
+" }}}
+" {{{ .pypirc
+autocmd BufRead,BufNewFile .pypirc set ft=dosini
+autocmd BufRead,BufNewFile *.yml set shiftwidth=2
+autocmd BufRead,BufNewFile *.yml set tabstop=2
+" }}}
 " }}}
 
 " For airline
@@ -177,7 +180,7 @@ nnoremap                <leader>gt      :tag<SPACE>
 nnoremap <silent>       <C-\>           :NERDTreeToggle<CR>
 nnoremap <silent>       <C-A-F>         :NERDTreeFind<CR>
 let g:NERDTreeWinPos = "right"
-let NERDTreeIgnore=['\.pyc$', '\~$', '\.swp', '\.venv', '\.vscode', '\.idea', '\.git']
+let NERDTreeIgnore=['\.pyc$', '\~$', '\.swp', '\.venv', '\.vscode', '\.idea', '\.git$']
 let NERDTreeShowHidden=1
 
 " For tagbar
@@ -202,31 +205,6 @@ nnoremap <silent>       <F4>            :call QToggleListCharsShow()<CR>
 
 " {{{ JavaScript
 let g:javascript_plugin_jsdoc = 1
-" }}}
-
-" {{{ YouCompleteMe LSP
-"nnoremap <silent> gd :YcmCompleter GoToDefinition<CR>
-"nnoremap <silent> gr :YcmCompleter GoToReferences<CR>
-"nnoremap <silent> gI :YcmCompleter GoToImplementation<CR>
-"nnoremap <silent> gK :YcmCompleter GetType<CR>
-
-"let g:ycm_language_server = [
-  "\   {
-  "\     'name': 'json',
-  "\     'cmdline': [ 'vscode-json-languageserver', '--stdio' ],
-  "\     'filetypes': [ 'json' ],
-  "\   },
-  "\   {
-  "\     'name': 'yaml',
-  "\     'cmdline': [ 'yaml-language-server', '--stdio' ],
-  "\     'filetypes': [ 'yaml' ],
-  "\   },
-  "\   {
-  "\     'name': 'docker',
-  "\     'filetypes': [ 'dockerfile' ],
-  "\     'cmdline': [ 'docker-langserver', '--stdio' ]
-  "\   },
-  "\ ]
 " }}}
 
 " {{{ Neovim LSP
