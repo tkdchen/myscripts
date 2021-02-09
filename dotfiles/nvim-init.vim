@@ -73,7 +73,6 @@ set splitbelow
 set tabstop=4
 set wildmenu
 set t_Co=256
-
 set textwidth=79
 set softtabstop=4
 set shiftround
@@ -87,10 +86,6 @@ let base16colorspace=256
 let mapleader=","
 
 colorscheme base16-gruvbox-dark-pale
-
-" {{{ General key mappings
-nnoremap                <F3>              /<c-r><c-w>
-" }}}
 
 " {{{ Settings for specific file types
 " {{{ HTML
@@ -137,15 +132,18 @@ autocmd BufRead,BufNewFile *.yml set tabstop=2
 let g:airline_theme='angr'
 let g:airline_solarized_bg='dark'
 
-" Move to tab back and forth
-nnoremap <silent>       th              :tabfirst<CR>
-nnoremap <silent>       tk              :tabnext<CR>
-nnoremap <silent>       tj              :tabprev<CR>
-nnoremap <silent>       tl              :tablast<CR>
-nnoremap                tt              :tabedit<Space>
-nnoremap <silent>       tn              :tabnext<Space>
-nnoremap <silent>       tm              :tabm<Space>
-nnoremap <silent>       td              :tabclose<CR>
+" {{{ Key bindings
+nnoremap                <F3>              /<c-r><c-w>
+
+" Bindings for tabs
+nnoremap <silent>       <leader>th      :tabfirst<CR>
+nnoremap <silent>       <leader>tk      :tabnext<CR>
+nnoremap <silent>       <leader>tj      :tabprev<CR>
+nnoremap <silent>       <leader>tl      :tablast<CR>
+nnoremap                <leader>tt      :tabedit<Space>
+nnoremap <silent>       <leader>tn      :tabnext<Space>
+nnoremap <silent>       <leader>tm      :tabm<Space>
+nnoremap <silent>       <leader>td      :tabclose<CR>
 
 nnoremap <silent>       <leader>w       :w<CR>
 nnoremap <silent>       <leader>ck      :cclose<CR>
@@ -156,41 +154,30 @@ nnoremap                <leader>vg      :vimgrep<SPACE>/<C-R><C-W>/<SPACE>**/*.p
 nnoremap <silent>       <leader>er      :vsplit ~/.vimrc<CR>
 nnoremap                <leader>st      :tag<SPACE>
 nnoremap                <leader>cs      :colorscheme<SPACE>
-
 nnoremap <silent>       <ESC><ESC>      :nohlsearch<CR>
 
-" {{{ Copy paths: key bindings
+" Copy file path in current buffer
 nnoremap <silent>       <leader>cfp     :let @+ = expand("%")<CR>
 " }}}
 
 command! MakeTags !ctags -R
 
-" For CtrlP
+" {{{ CtrlP
 set wildignore+=*.swp,*.pyc
-"nnoremap                <leader>t       :CtrlPBufTag<CR>
-nnoremap                <leader>l       :CtrlPBuffer<CR>
-
 let g:ctrlp_custom_ignore = 'build\|dist\|.git\|.env\|node_modules\|htmlcov\|target/html'
 
-" For VIM fuzzy finder
-nnoremap                <leader>p       :e **/*
-nnoremap                <leader>gt      :tag<SPACE>
+"nnoremap                <leader>t       :CtrlPBufTag<CR>
+nnoremap                <leader>l       :CtrlPBuffer<CR>
+" }}}
 
-" For NERDTree
-nnoremap <silent>       <C-\>           :NERDTreeToggle<CR>
-nnoremap <silent>       <C-A-F>         :NERDTreeFind<CR>
+" {{{ NERDTree
 let g:NERDTreeWinPos = "right"
 let NERDTreeIgnore=['\.pyc$', '\~$', '\.swp', '\.venv', '\.vscode', '\.idea', '\.git$']
 let NERDTreeShowHidden=1
 
-" For tagbar
-nmap <silent>           <F8>            :TagbarToggle<CR>
-nmap <silent>           <F7>            :TagbarCurrent<CR>
-
-" For YouCompleteMe
-if has('mac')
-  let g:python3_host_prog = '/usr/local/bin/python3'
-endif
+nnoremap <silent>       <C-\>           :NERDTreeToggle<CR>
+nnoremap <silent>       <C-A-F>         :NERDTreeFind<CR>
+" }}}
 
 function! QToggleListCharsShow()
     if exists("s:c_set_list") == 0
