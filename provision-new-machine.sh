@@ -3,12 +3,13 @@
 set -ex
 
 # {{{ Packages
-sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-33.noarch.rpm
+sudo dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-33.noarch.rpm
 
 declare -a packages
 packages=(
 python3-devel python3-tabulate
 git neovim podman podman-compose buildah rpmdevtools krb5-workstation vagrant
+rsync
 xed kwrite
 VirtualBox
 )
