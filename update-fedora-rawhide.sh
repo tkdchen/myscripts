@@ -2,7 +2,7 @@
 
 set -ex
 
-images_url=https://fedora.mirror.constant.com/fedora/linux/development/rawhide/Cloud/x86_64/images/
+images_url=http://mirrors.aliyun.com/fedora/development/rawhide/Cloud/x86_64/images/
 # Example image filename: Fedora-Cloud-Base-Vagrant-Rawhide-20210114.n.1.x86_64.vagrant-virtualbox.box
 image_filename=$(
     curl -L "$images_url" |
