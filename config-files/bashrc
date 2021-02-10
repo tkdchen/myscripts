@@ -2,8 +2,8 @@
 # .bashrc
 
 # Source global definitions
-if [ -f /etc/bashrc ]; then
-    . /etc/bashrc
+if [ -f "/etc/bashrc" ]; then
+    . "/etc/bashrc"
 fi
 
 alias vim=nvim
@@ -28,27 +28,19 @@ export GO111MODULE=on
 export REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
 export GIT_EDITOR=nvim
 
+# {{{ Alias
 alias ff='firefox'
-
 alias grep='grep --exclude=*.pyc --exclude=.git --exclude=.venv --color'
 
 #alias docker=podman
 
-# {{{ Git alias
+# {{{ Git
 alias gita='git add'
 alias gitd='git diff'
 alias gits='git status'
 alias git-stats-commit-count-by-author='git log --format="%an" | sort | uniq -c | sort -k1 -n --reverse'
 alias git-show-top-patch='git log -p -1'
 alias git-sync-with-upstream='git checkout master && git fetch upstream && git merge upstream/master'
-# }}}
-
-alias pacup='sudo dnf update'
-alias paci='sudo dnf install'
-alias pacq='sudo dnf repoquery'
-
-# {{{ Git alias
-alias di='docker images'
 # }}}
 
 alias tox='tox --workdir /tmp/tox-$(basename $PWD)'
@@ -62,11 +54,10 @@ alias venvoff='deactivate'
 alias venvi='python3 -m pip install'
 
 alias login-aliyun-vm='ssh root@123.57.27.187'
-alias dmenu_go='dmenu -fn "DejaVu Sans Mono-14"'
-
-alias st='st -f "FuraCode Nerd Font Mono-14"'
+alias dmenu_go='dmenu -fn "JetBrains Mono-14"'
 
 alias pypi_download_source='python3 -m pip download --no-binary :all: --no-deps'
+# }}}
 
 function g-sync-up-with-upstream
 {
@@ -82,20 +73,12 @@ function q-connect-network
     [[ -n "$networkname" ]] && nmcli --ask c up "$networkname"
 }
 
-function q-notes-open
-{
-    local -r notefile=$(find $HOME/Documents/My/notes/ -name "*.org" -exec basename '{}' \; | dmenu_go)
-    [[ -n "$notefile" ]] && emacs "$HOME/Documents/My/notes/$notefile" &
-}
-
 function pypi-mirrors-list
 {
-    declare -a fast_pypi_mirros
-    fast_pypi_mirros=(
-        https://pypi.tuna.tsinghua.edu.cn/simple
-        https://mirrors.aliyun.com/pypi/simple/
-        https://pypi.doubanio.com/simple
-        https://mirrors.cloud.tencent.com/pypi/simple
-    )
-    echo "${fast_pypi_mirros[@]}" | dmenu_go
+    dmenu_go <<< "\
+https://pypi.tuna.tsinghua.edu.cn/simple
+https://mirrors.aliyun.com/pypi/simple/
+https://pypi.doubanio.com/simple
+https://mirrors.cloud.tencent.com/pypi/simple
+"
 }
