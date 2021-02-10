@@ -3,32 +3,37 @@
 set -ex
 
 # {{{ Packages
-sudo dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-33.noarch.rpm
+echo "📦 Install packages"
+
+releasever=$(cat /etc/os-release | grep VERSION_ID | cut -d'=' -f2)
+sudo dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-${releasever}.noarch.rpm
 
 declare -a packages
 packages=(
-python3-devel python3-tabulate
-git neovim podman podman-compose buildah rpmdevtools krb5-workstation vagrant
-rsync
-xed kwrite
-VirtualBox
+    gcc gcc-c++ golang npm
+    python3-devel python3-pip python3-tabulate
+    krb5-devel
+    git neovim podman podman-compose buildah rpmdevtools krb5-workstation vagrant rsync
+    xed kwrite
+    VirtualBox
 )
 
 sudo dnf install -y "${packages[@]}"
 # }}}
 
 # {{{ Container images
+echo "🏗️ Pull container images"
 declare -a images
 images=(
-registry.fedoraproject.org/fedora:32
-registry.fedoraproject.org/fedora:33
-registry.fedoraproject.org/fedora:rawhide
-centos:7
-centos:8
+    registry.fedoraproject.org/fedora:32
+    registry.fedoraproject.org/fedora:33
+    registry.fedoraproject.org/fedora:rawhide
+    centos:7
+    centos:8
 )
 
 for image in "${images[@]}"; do
-podman pull "$image"
+    podman pull "$image"
 done
 # }}}
 
@@ -39,6 +44,7 @@ vagrant_machines="$HOME/vagrant-machines"
 [ -e "$vagrant_machines" ] || mkdir "$vagrant_machines"
 
 # {{{ Gitconfig
+echo "Configure git"
 git config --global alias.br branch
 git config --global alias.st status
 git config --global alias.cm commit
@@ -50,6 +56,23 @@ git config --global color.ui true
 git config --global user.name "Chenxiong Qi"
 git config --global user.email "qcxhome@gmail.com"
 git config --global core.editor vim
+# }}}
+
+# {{{ Install LSP servers
+echo "✍️ Install LSP servers"
+
+lsp_servers=(
+    bash-language-server
+    dockerfile-language-server-nodejs
+    typescript-language-server
+)
+home_npm="$HOME/npm"
+[ -e "$home_npm" ] || mkdir "$home_npm"
+(cd ${home_npm}; for lsp_s in "${lsp_servers[@]}"; do
+    npm i $lsp_s
+done)
+
+python3 -m pip install --user 'python-language-server[all]'
 # }}}
 
 # vim: foldmethod=marker ts=4 sw=4 autoindent

@@ -14,7 +14,7 @@ POWERLINE_BASH_SELECT=1
 . /usr/share/powerline/bash/powerline.sh
 
 # User specific environment
-PATH="$HOME/.local/bin:$HOME/bin:$HOME/node_modules/.bin:$HOME/.cargo/bin:$HOME/go/bin:$PATH"
+PATH="$HOME/.local/bin:$HOME/bin:$HOME/npm/node_modules/.bin:$HOME/.cargo/bin:$HOME/go/bin:$PATH"
 export PATH
 
 export GOPATH=$HOME/go

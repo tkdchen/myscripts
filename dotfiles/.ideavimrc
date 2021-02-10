@@ -1,0 +1,16 @@
+set ideajoin
+set surround
+
+" Key mappings for general edit
+" Copy content from where the curosr is to the end of the line but not include
+" the last charater.
+nnoremap ,ye v$hhy
+" Delete content from where the curosr is to the end of the line but not include
+" the last charater.
+nnoremap ,de v$hhd
+
+nnoremap ,ca :action CloseAllEditors<CR>
+nnoremap ,ce :action CloseEditor<CR>
+nnoremap ,fs :action FileStructurePopup<CR>
+nnoremap ,gb :action Switcher<CR>
+nnoremap ,l :action Switcher<CR>
