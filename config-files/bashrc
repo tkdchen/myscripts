@@ -6,12 +6,12 @@ if [ -f "/etc/bashrc" ]; then
     . "/etc/bashrc"
 fi
 
-alias vim=nvim
-
-powerline-daemon -q
-POWERLINE_BASH_CONTINUATION=1
-POWERLINE_BASH_SELECT=1
-. /usr/share/powerline/bash/powerline.sh
+if [ -e "/usr/bin/powerline-daemon" ]; then
+    powerline-daemon -q
+    POWERLINE_BASH_CONTINUATION=1
+    POWERLINE_BASH_SELECT=1
+    . /usr/share/powerline/bash/powerline.sh
+fi
 
 # User specific environment
 PATH="$HOME/.local/bin:$HOME/bin:$HOME/npm/node_modules/.bin:$HOME/.cargo/bin:$HOME/go/bin:$PATH"
@@ -24,6 +24,8 @@ export GO111MODULE=on
 # export SYSTEMD_PAGER=
 
 # User specific aliases and functions
+
+alias vim=nvim
 
 export REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
 export GIT_EDITOR=nvim
