@@ -87,6 +87,9 @@ let mapleader=","
 
 colorscheme base16-gruvbox-dark-pale
 
+abbr cbld CLOUDBLD
+abbr im import
+
 " {{{ Settings for specific file types
 " {{{ HTML
 autocmd BufRead,BufNewFile *.html set filetype=htmldjango
