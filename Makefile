@@ -1,5 +1,6 @@
 
 INSTALL_BIN=install -m 664 -b --suffix="$(date +'-%Y%m%d-%H%M%S')"
+NEOVIM_CONFIG_DIR=$(HOME)/.config/nvim
 
 .PHONY: install-bashrc
 install-bashrc:
@@ -7,8 +8,8 @@ install-bashrc:
 
 .PHONY: install-nvim-init
 install-nvim-init:
-	@[ -e "$(HOME)/.config/nvim/" ] || mkdir -p $(HOME)/.config/nvim
-	@$(INSTALL_BIN) config-files/nvim-init.vim $(HOME)/.config/nvim/init.vim
+	@[ -e "$(NEOVIM_CONFIG_DIR)" ] || mkdir -p "$(NEOVIM_CONFIG_DIR)"
+	@$(INSTALL_BIN) config-files/nvim-init.vim $(NEOVIM_CONFIG_DIR)/init.vim
 
 .PHONY: install-vimrc
 install-vimrc:
