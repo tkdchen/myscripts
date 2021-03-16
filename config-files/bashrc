@@ -84,3 +84,10 @@ https://pypi.doubanio.com/simple
 https://mirrors.cloud.tencent.com/pypi/simple
 "
 }
+
+
+if [ -e "/usr/bin/fortune" ]; then
+    fortune
+    echo
+    echo
+fi
