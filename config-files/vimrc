@@ -13,6 +13,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'mileszs/ack.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'kien/ctrlp.vim'
+Plugin 'morhetz/gruvbox'
 
 call vundle#end()               " required
 

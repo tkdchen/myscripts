@@ -46,6 +46,7 @@ Plug 'HerringtonDarkholme/yats.vim'  " Yet Another TypeScript Syntax
 " {{{ colorschemes
 Plug 'chriskempson/base16-vim'
 Plug 'joshdick/onedark.vim'
+Plug 'morhetz/gruvbox'
 Plug 'tomasiser/vim-code-dark'
 " }}}
 " {{{ Neovim LSP
