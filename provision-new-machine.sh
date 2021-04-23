@@ -5,20 +5,24 @@ set -ex
 # {{{ Packages
 echo "📦 Install packages"
 
-releasever=$(cat /etc/os-release | grep VERSION_ID | cut -d'=' -f2)
-sudo dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-${releasever}.noarch.rpm
+version_id=$(cat /etc/os-release | grep "^VERSION_ID" | cut -d'=' -f2)
+sudo dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-${version_id}.noarch.rpm
 
 declare -a packages
 packages=(
+    emacs hexchat
     gcc gcc-c++ golang npm
     python3-devel python3-pip python3-tabulate
     krb5-devel
     git neovim podman podman-compose buildah rpmdevtools krb5-workstation vagrant rsync
-    xed kwrite
+    xed kwrite kate
     VirtualBox
+    vim-enhanced
+    ibus ibus-table ibus-table-chinese ibus-table-code ibus-pinyin
+	gnome-tweaks terminator
 )
 
-sudo dnf install -y "${packages[@]}"
+sudo dnf install -y ${packages[@]}
 # }}}
 
 # {{{ Container images
@@ -62,6 +66,7 @@ git config --global core.editor vim
 echo "✍️ Install LSP servers"
 
 lsp_servers=(
+	pyright
     bash-language-server
     dockerfile-language-server-nodejs
     typescript-language-server
@@ -71,8 +76,6 @@ home_npm="$HOME/npm"
 (cd ${home_npm}; for lsp_s in "${lsp_servers[@]}"; do
     npm i $lsp_s
 done)
-
-python3 -m pip install --user 'python-language-server[all]'
 # }}}
 
 # vim: foldmethod=marker ts=4 sw=4 autoindent
