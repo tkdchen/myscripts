@@ -26,6 +26,12 @@ packages=(
 sudo dnf install -y ${packages[@]}
 # }}}
 
+# {{{ Install useful Python packages
+echo "📦 Installing Python packages in user mode"
+# Jedi is used for the Python REPL
+python3 -m pip install --user jedi
+# }}}
+
 # {{{ Container images
 echo "🏗️ Pull container images"
 declare -a images
