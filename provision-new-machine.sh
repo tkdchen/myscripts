@@ -19,7 +19,9 @@ packages=(
     VirtualBox
     vim-enhanced
     ibus ibus-table ibus-table-chinese ibus-table-code ibus-pinyin
-	gnome-tweaks terminator
+    gnome-tweaks terminator
+    mariadb mariadb-devel postgresql-server postgresql postgresql-devel
+    dmenu
 )
 
 sudo dnf install -y ${packages[@]}
