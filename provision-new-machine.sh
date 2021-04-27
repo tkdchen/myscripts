@@ -16,7 +16,6 @@ packages=(
     krb5-devel
     git neovim podman podman-compose buildah rpmdevtools krb5-workstation vagrant rsync
     xed kwrite kate
-    VirtualBox
     vim-enhanced
     ibus ibus-table ibus-table-chinese ibus-table-code ibus-pinyin
     gnome-tweaks terminator
