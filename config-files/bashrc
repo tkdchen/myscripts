@@ -19,25 +19,32 @@ export PS1='[$(date +%H:%M:%S)] \w$(__git_ps1 " (%s)")> '
 #. /usr/share/powerline/bash/powerline.sh
 
 # User specific environment
-PATH="$HOME/.local/bin:$HOME/bin:$HOME/node_modules/.bin:$HOME/.cargo/bin:$HOME/go/bin:$PATH"
+PATH="$HOME/.local/bin:$HOME/bin:$HOME/npm/node_modules/.bin:$HOME/.cargo/bin:$HOME/go/bin:$PATH"
 export PATH
 
 export DENO_INSTALL="/home/chen/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
-
-export GOPATH=$HOME/go
-export GO111MODULE=on
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 
 # User specific aliases and functions
 
+# {{{ Ensure ibus can be used in non-GNOME DE.
+# Added when starting to use a fresh Fedora 33 on new ThinkPad
+# What I did: install ibus manually and launch ibus-daemon manually.
+export GTK_IM_MODULE=ibus
+export QT_IM_MODULE=ibus
+export XMODIFIERS=@im=ibus
+# }}}
+
 export REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
 export GIT_EDITOR=nvim
+export GOPATH=$HOME/go
+export GO111MODULE=on
+export PYTHONSTARTUP="$(python -m jedi repl)"
 
 alias ff='firefox'
-
 alias grep='grep --exclude=*.pyc --exclude=.git --exclude=.venv --color'
 
 #alias docker=podman
@@ -70,9 +77,7 @@ alias venvoff='deactivate'
 alias venvi='python3 -m pip install'
 
 alias login-aliyun-vm='ssh root@123.57.27.187'
-alias dmenu_go='dmenu -fn "DejaVu Sans Mono-14"'
-
-alias st='st -f "FuraCode Nerd Font Mono-14"'
+alias dmenu_go='dmenu -fn "DejaVu Sans Mono-13"'
 
 alias pypi_download_source='python3 -m pip download --no-binary :all: --no-deps'
 
@@ -99,20 +104,12 @@ function q-notes-open
 function pypi-mirrors-list
 {
     declare -a fast_pypi_mirros
-    fast_pypi_mirros=(
-        https://pypi.tuna.tsinghua.edu.cn/simple
-        https://mirrors.aliyun.com/pypi/simple/
-        https://pypi.doubanio.com/simple
-        https://mirrors.cloud.tencent.com/pypi/simple
-    )
-    echo "${fast_pypi_mirros[@]}" | dmenu_go
+    fast_pypi_mirros='https://pypi.tuna.tsinghua.edu.cn/simple
+https://mirrors.aliyun.com/pypi/simple/
+https://pypi.doubanio.com/simple
+https://mirrors.cloud.tencent.com/pypi/simple
+'
+    echo "$fast_pypi_mirros" | dmenu_go
 }
+
 source "$HOME/.cargo/env"
-
-
-#if [ -e "/usr/bin/fortune" ]; then
-    #fortune | cowsay
-    #echo
-    #echo
-#fi
-
