@@ -69,6 +69,14 @@ git config --global user.email "qcxhome@gmail.com"
 git config --global core.editor vim
 # }}}
 
+# {{{ Setup GO lang
+go_home=$HOME/go
+[ -e "$go_home" ] || mkdir "$go_home"
+
+# Install gopls for LSP
+GOPATH="$go_home" go get golang.org/x/tools/gopls@latest
+# }}}
+
 # {{{ Install LSP servers
 echo "✍️ Install LSP servers"
 
