@@ -21,6 +21,7 @@ packages=(
     gnome-tweaks terminator
     mariadb mariadb-devel postgresql-server postgresql postgresql-devel
     dmenu
+    fedpkg
 )
 
 sudo dnf install -y ${packages[@]}
