@@ -14,7 +14,7 @@ packages=(
     gcc gcc-c++ golang npm
     python3-devel python3-pip python3-tabulate
     krb5-devel
-    git neovim podman podman-compose buildah rpmdevtools krb5-workstation vagrant rsync
+    git neovim podman podman-compose buildah rpmdevtools vagrant rsync
     xed kwrite kate
     vim-enhanced
     ibus ibus-table ibus-table-chinese ibus-table-code ibus-pinyin
@@ -92,6 +92,12 @@ home_npm="$HOME/npm"
 (cd ${home_npm}; for lsp_s in "${lsp_servers[@]}"; do
     npm i $lsp_s
 done)
+# }}}
+
+# {{{ Setup Fedora
+sudo dnf install -y krb5-workstation krb5-pkinit
+echo "cqi" > ${HOME}/.fedora.upn
+echo "For more info, refer to https://fedoraproject.org/wiki/Infrastructure/Kerberos#Command_line"
 # }}}
 
 # vim: foldmethod=marker ts=4 sw=4 autoindent
