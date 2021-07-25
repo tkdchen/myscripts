@@ -1,10 +1,17 @@
 
-INSTALL_BIN=install -m 664 -b --suffix="$(date +'-%Y%m%d-%H%M%S')"
+OS := $(shell uname)
 NEOVIM_CONFIG_DIR=$(HOME)/.config/nvim
+
+INSTALL_BIN=install -m 664 -b $(if ifeq ($(OS), Darwin),-B,-S) "$(date +'-%Y%m%d-%H%M%S')"
 
 .PHONY: install-bashrc
 install-bashrc:
-	@$(INSTALL_BIN) config-files/bashrc $(HOME)/.bashrc
+	@$(INSTALL_BIN) config-files/bashrc.common $(HOME)/.bashrc.common
+	@if [ "$(OS)" == "Darwin" ]; then \
+		$(INSTALL_BIN) config-files/bashrc.macos $(HOME)/.bash_profile; \
+	else \
+		$(INSTALL_BIN) config-files/bashrc $(HOME)/.bashrc; \
+	fi
 
 .PHONY: install-nvim-init
 install-nvim-init:
@@ -17,4 +24,3 @@ install-vimrc:
 
 .PHONY: install-config-files
 install-config-files: install-bashrc install-nvim-init install-vimrc
-

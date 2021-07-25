@@ -1,15 +1,13 @@
 # vim: foldmethod=marker ts=4 sw=4 autoindent
 # .bashrc
 
-# Source global definitions
 if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
 . /usr/share/git-core/contrib/completion/git-prompt.sh
 
-export GIT_PS1_SHOWDIRTYSTATE=1
-export PS1='[$(date +%H:%M:%S)] \w$(__git_ps1 " (%s)")> '
+. ~/.bashrc.common
 
 # alias vim=nvim
 
@@ -19,8 +17,6 @@ export PS1='[$(date +%H:%M:%S)] \w$(__git_ps1 " (%s)")> '
 #. /usr/share/powerline/bash/powerline.sh
 
 # User specific environment
-PATH="$HOME/.local/bin:$HOME/bin:$HOME/npm/node_modules/.bin:$HOME/.cargo/bin:$HOME/go/bin:$PATH"
-export PATH
 
 export DENO_INSTALL="/home/chen/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
@@ -39,24 +35,10 @@ export XMODIFIERS=@im=ibus
 # }}}
 
 export REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
-export GIT_EDITOR=nvim
-export GOPATH=$HOME/go
-export GO111MODULE=on
-export PYTHONSTARTUP="$(python -m jedi repl)"
 
 alias ff='firefox'
-alias grep='grep --exclude=*.pyc --exclude=.git --exclude=.venv --color'
 
 #alias docker=podman
-
-# {{{ Git alias
-alias gita='git add'
-alias gitd='git diff'
-alias gits='git status'
-alias git-stats-commit-count-by-author='git log --format="%an" | sort | uniq -c | sort -k1 -n --reverse'
-alias git-show-top-patch='git log -p -1'
-alias git-sync-with-upstream='git checkout master && git fetch upstream && git merge upstream/master'
-# }}}
 
 alias pacup='sudo dnf update'
 alias paci='sudo dnf install'
@@ -66,28 +48,8 @@ alias pacq='sudo dnf repoquery'
 alias di='docker images'
 # }}}
 
-alias tox='tox --workdir /tmp/tox-$(basename $PWD)'
-
 alias my-bodhi-updates='bodhi updates query --user cqi'
-
-alias venvnew='${pybin:-python3} -m venv .venv'
-alias venvdrop='[ -e ".venv" ] && rm -r .venv'
-alias venvon='source ./.venv/bin/activate'
-alias venvoff='deactivate'
-alias venvi='python3 -m pip install'
-
-alias login-aliyun-vm='ssh root@123.57.27.187'
 alias dmenu_go='dmenu -fn "DejaVu Sans Mono-13"'
-
-alias pypi_download_source='python3 -m pip download --no-binary :all: --no-deps'
-
-function g-sync-up-with-upstream
-{
-    local -r branch=${1:-master}
-    git fetch upstream
-    git checkout "$branch"
-    git merge "upstream/$branch"
-}
 
 function q-connect-network
 {
