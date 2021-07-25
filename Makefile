@@ -2,25 +2,25 @@
 OS := $(shell uname)
 NEOVIM_CONFIG_DIR=$(HOME)/.config/nvim
 
-INSTALL_BIN=install -m 664 -b $(if ifeq ($(OS), Darwin),-B,-S) "$(date +'-%Y%m%d-%H%M%S')"
+INSTALL=install -m 664 -b $(if ifeq ($(OS), Darwin),-B,-S) "$(date +'-%Y%m%d-%H%M%S')"
 
 .PHONY: install-bashrc
 install-bashrc:
-	@$(INSTALL_BIN) config-files/bashrc.common $(HOME)/.bashrc.common
+	@$(INSTALL) config-files/bashrc.common $(HOME)/.bashrc.common
 	@if [ "$(OS)" == "Darwin" ]; then \
-		$(INSTALL_BIN) config-files/bashrc.macos $(HOME)/.bash_profile; \
+		$(INSTALL) config-files/bashrc.macos $(HOME)/.bash_profile; \
 	else \
-		$(INSTALL_BIN) config-files/bashrc $(HOME)/.bashrc; \
+		$(INSTALL) config-files/bashrc $(HOME)/.bashrc; \
 	fi
 
 .PHONY: install-nvim-init
 install-nvim-init:
 	@[ -e "$(NEOVIM_CONFIG_DIR)" ] || mkdir -p "$(NEOVIM_CONFIG_DIR)"
-	@$(INSTALL_BIN) config-files/nvim-init.vim $(NEOVIM_CONFIG_DIR)/init.vim
+	@$(INSTALL) config-files/nvim-init.vim $(NEOVIM_CONFIG_DIR)/init.vim
 
 .PHONY: install-vimrc
 install-vimrc:
-	@$(INSTALL_BIN) config-files/vimrc $(HOME)/.vimrc
+	@$(INSTALL) config-files/vimrc $(HOME)/.vimrc
 
 .PHONY: install-config-files
 install-config-files: install-bashrc install-nvim-init install-vimrc
