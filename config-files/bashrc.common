@@ -22,6 +22,7 @@ alias gitd='git diff'
 alias gits='git status'
 alias git-stats-commit-count-by-author='git log --format="%an" | sort | uniq -c | sort -k1 -n --reverse'
 alias git-show-top-patch='git log -p -1'
+alias git-log-view='git log --oneline --branches --graph --decorate=auto'
 # }}}
 
 alias tox='tox --workdir /tmp/tox-$(basename $PWD)'
