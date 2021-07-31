@@ -85,6 +85,7 @@ lsp_servers=(
 	pyright
     bash-language-server
     dockerfile-language-server-nodejs
+    typescript
     typescript-language-server
 )
 home_npm="$HOME/npm"
