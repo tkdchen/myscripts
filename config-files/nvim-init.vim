@@ -51,7 +51,6 @@ Plug 'tomasiser/vim-code-dark'
 " }}}
 " {{{ Neovim LSP
 Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/completion-nvim'
 " }}}
 
 call plug#end()
@@ -196,7 +195,6 @@ nnoremap <silent>       <F4>            :call QToggleListCharsShow()<CR>
 " {{{ JavaScript
 let g:javascript_plugin_jsdoc = 1
 " }}}
-
 " {{{ Neovim LSP
 let g:LanguageClient_serverCommands = {
     \ 'python': ['pyls', '-vv', '--log-file', '~/pyls.log'],
@@ -252,7 +250,6 @@ local lsp_config_callback = function(client, bufnr)
 end
 
 local on_attach_handler = function(client, bufnr)
-  require'completion'.on_attach(client, bufnr)
   lsp_config_callback(client, bufnr)
 end
 
@@ -287,17 +284,5 @@ nvim_lsp.bashls.setup{
     on_attach = on_attach_handler
 }
 EOF
-
-" {{{ completion-nvim
-" Use <Tab> and <S-Tab> to navigate through popup menu
-inoremap <expr>     <Tab>       pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr>     <S-Tab>     pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-" Set completeopt to have a better completion experience
-set completeopt=menuone,noinsert,noselect
-
-" Avoid showing message extra message when using completion
-set shortmess+=c
-" }}}
 
 " }}}
