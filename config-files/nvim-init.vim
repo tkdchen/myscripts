@@ -85,7 +85,7 @@ let base16colorspace=256
 
 let mapleader=","
 
-colorscheme base16-gruvbox-dark-pale
+colorscheme base16-tomorrow-night
 
 abbr cbld CLOUDBLD
 abbr im import
