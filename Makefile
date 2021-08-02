@@ -2,7 +2,12 @@
 OS := $(shell uname)
 NEOVIM_CONFIG_DIR=$(HOME)/.config/nvim
 
-INSTALL=install -m 664 -b $(if ifeq ($(OS), Darwin),-B,-S) "$(date +'-%Y%m%d-%H%M%S')"
+ifeq ($(OS),Darwin)
+	opt=-B
+else
+	opt=-S
+endif
+INSTALL=install -m 664 -b $(opt) "$(date +'-%Y%m%d-%H%M%S')"
 
 .PHONY: install-bashrc
 install-bashrc:
