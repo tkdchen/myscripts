@@ -80,7 +80,7 @@ GOPATH="$go_home" go get golang.org/x/tools/gopls@latest
 echo "✍️ Install LSP servers"
 
 lsp_servers=(
-	pyright
+    pyright
     bash-language-server
     dockerfile-language-server-nodejs
     typescript
