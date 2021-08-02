@@ -5,11 +5,9 @@ set -ex
 # {{{ Packages
 echo "📦 Install packages"
 
-version_id=$(cat /etc/os-release | grep "^VERSION_ID" | cut -d'=' -f2)
-sudo dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-${version_id}.noarch.rpm
-
 declare -a packages
 packages=(
+    rpmfusion-free-release
     emacs hexchat
     gcc gcc-c++ golang npm
     python3-devel python3-pip python3-tabulate
