@@ -19,10 +19,12 @@ alias grep='grep --exclude=*.pyc --exclude=.git --exclude=.venv --color'
 # {{{ Git alias
 alias gita='git add'
 alias gitd='git diff'
-alias gits='git status'
-alias git-stats-commit-count-by-author='git log --format="%an" | sort | uniq -c | sort -k1 -n --reverse'
-alias git-show-top-patch='git log -p -1'
+alias gitdiff='git diff'
+alias gitlog='git log'
 alias git-log-view='git log --oneline --branches --graph --decorate=auto'
+alias gits='git status'
+alias git-show-top-patch='git log -p -1'
+alias git-stats-commit-count-by-author='git log --format="%an" | sort | uniq -c | sort -k1 -n --reverse'
 # }}}
 
 alias tox='tox --workdir /tmp/tox-$(basename $PWD)'
