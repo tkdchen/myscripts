@@ -100,6 +100,7 @@ echo "For more info, refer to https://fedoraproject.org/wiki/Infrastructure/Kerb
 # }}}
 
 # {{{ Vagrant setup
+sudo mkdir /var/local/vagrant_home
 sudo mkdir /var/local/vagrant_libvirt_images
 # }}}
 
