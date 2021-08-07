@@ -18,6 +18,15 @@ fi
 
 # User specific environment
 
+# This requires the /var mount point has enough disk space as a main storage
+# for the system.
+# Ensure it is writable by the user.
+export VAGRANT_HOME="/var/local/vagrant_home/"
+if [ ! -e "$VAGRANT_HOME" ]; then
+    echo "${VAGRANT_HOME} does not exist."
+    echo "Create it before using vagrant and ensure it is accessible."
+fi
+
 export DENO_INSTALL="/home/chen/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
 
