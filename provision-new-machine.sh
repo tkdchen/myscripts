@@ -2,6 +2,8 @@
 
 set -ex
 
+USER=$(id -u -n)
+
 # {{{ Packages
 echo "📦 Install packages"
 
@@ -101,7 +103,9 @@ echo "For more info, refer to https://fedoraproject.org/wiki/Infrastructure/Kerb
 
 # {{{ Vagrant setup
 sudo mkdir /var/local/vagrant_home
+sudo chown $USER:$USER /var/local/vagrant_home
 sudo mkdir /var/local/vagrant_libvirt_images
+sudo chown $USER:$USER /var/local/vagrant_libvirt_images
 # }}}
 
 # vim: foldmethod=marker ts=4 sw=4 autoindent
