@@ -99,4 +99,8 @@ echo "cqi" > ${HOME}/.fedora.upn
 echo "For more info, refer to https://fedoraproject.org/wiki/Infrastructure/Kerberos#Command_line"
 # }}}
 
+# {{{ Vagrant setup
+sudo mkdir /var/local/vagrant_libvirt_images
+# }}}
+
 # vim: foldmethod=marker ts=4 sw=4 autoindent

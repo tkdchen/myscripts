@@ -84,3 +84,9 @@ https://mirrors.cloud.tencent.com/pypi/simple
 }
 
 source "$HOME/.cargo/env"
+
+export VAGRANT_LIBVIRT_IMAGES=/var/local/vagrant_libvirt_images
+if [ ! -e "${VAGRANT_LIBVIRT_IMAGES}" ]; then
+    echo "${VAGRANT_LIBVIRT_IMAGES} does not exist."
+    echo "Create it before using vagrant with libvirt and ensure it is accessible."
+fi
