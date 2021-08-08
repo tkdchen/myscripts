@@ -35,7 +35,8 @@ alias venvon='source ./.venv/bin/activate'
 alias venvoff='deactivate'
 alias venvi='python3 -m pip install'
 
-alias login-aliyun-vm='ssh root@123.57.27.187'
+alias login-aliyun-vm-as-root='ssh root@aliyun-vm'
+alias login-aliyun-vm='ssh chen@aliyun-vm'
 
 alias pypi_download_source='python3 -m pip download --no-binary :all: --no-deps'
 

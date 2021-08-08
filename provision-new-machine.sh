@@ -108,4 +108,10 @@ sudo mkdir /var/local/vagrant_libvirt_images
 sudo chown $USER:$USER /var/local/vagrant_libvirt_images
 # }}}
 
+# {{{ Aliyun
+if ! grep "123\.57\.27\.187" /etc/hosts >/dev/null; then
+    echo "123.57.27.187  aliyun-vm" >> /etc/hosts
+fi
+# }}}
+
 # vim: foldmethod=marker ts=4 sw=4 autoindent
