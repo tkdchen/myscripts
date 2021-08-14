@@ -6,28 +6,20 @@ if [ -f /etc/bashrc ]; then
 fi
 
 . /usr/share/git-core/contrib/completion/git-prompt.sh
-
 . ~/.bashrc.common
-
-# alias vim=nvim
-
-#powerline-daemon -q
-#POWERLINE_BASH_CONTINUATION=1
-#POWERLINE_BASH_SELECT=1
-#. /usr/share/powerline/bash/powerline.sh
 
 # User specific environment
 
 # This requires the /var mount point has enough disk space as a main storage
 # for the system.
 # Ensure it is writable by the user.
-export VAGRANT_HOME="/var/local/vagrant_home/"
+export VAGRANT_HOME="{{ vagrant_home }}"
 if [ ! -e "$VAGRANT_HOME" ]; then
     echo "${VAGRANT_HOME} does not exist."
     echo "Create it before using vagrant and ensure it is accessible."
 fi
 
-export DENO_INSTALL="/home/chen/.deno"
+export DENO_INSTALL="{{ ansible_user_dir }}/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
@@ -35,13 +27,11 @@ export PATH="$DENO_INSTALL/bin:$PATH"
 
 # User specific aliases and functions
 
-# {{{ Ensure ibus can be used in non-GNOME DE.
 # Added when starting to use a fresh Fedora 33 on new ThinkPad
 # What I did: install ibus manually and launch ibus-daemon manually.
 export GTK_IM_MODULE=ibus
 export QT_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
-# }}}
 
 export REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
 
@@ -53,12 +43,9 @@ alias pacup='sudo dnf update'
 alias paci='sudo dnf install'
 alias pacq='sudo dnf repoquery'
 
-# {{{ Git alias
 alias di='docker images'
-# }}}
 
-alias my-bodhi-updates='bodhi updates query --user cqi'
-alias dmenu_go='dmenu -fn "DejaVu Sans Mono-13"'
+alias my-bodhi-updates='bodhi updates query --user {{ fedora_username }}'
 
 function q-connect-network
 {
@@ -85,7 +72,7 @@ https://mirrors.cloud.tencent.com/pypi/simple
 
 source "$HOME/.cargo/env"
 
-export VAGRANT_LIBVIRT_IMAGES=/var/local/vagrant_libvirt_images
+export VAGRANT_LIBVIRT_IMAGES="{{ vagrant_libvirt_images_dir }}"
 if [ ! -e "${VAGRANT_LIBVIRT_IMAGES}" ]; then
     echo "${VAGRANT_LIBVIRT_IMAGES} does not exist."
     echo "Create it before using vagrant with libvirt and ensure it is accessible."

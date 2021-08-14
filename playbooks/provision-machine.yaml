@@ -1,0 +1,269 @@
+---
+- hosts: localhost
+  become_method: sudo
+
+  vars:
+    aliyun_vm_ip: "123.57.27.187"
+    go_home: "{{ ansible_user_dir }}/go"
+    go_proxy: "https://goproxy.io,direct"
+    vagrant_home: "/var/local/vagrant_home"
+    vagrant_libvirt_images_dir: "/var/local/vagrant_libvirt_images"
+    basic_packages:
+    - bash-completion
+    - buildah
+    - emacs
+    - fedpkg
+    - gcc
+    - gcc-c++
+    - git
+    - golang
+    - hexchat
+    - ibus
+    - ibus-pinyin
+    - ibus-table
+    - ibus-table-chinese
+    - ibus-table-code
+    - kate
+    - konsole
+    - krb5-devel
+    - krb5-pkinit
+    - krb5-workstation
+    - kwrite
+    - mariadb
+    - mariadb-devel
+    - neovim
+    - npm
+    - podman
+    - podman-compose
+    - postgresql
+    - postgresql-devel
+    - postgresql-server
+    - python3-devel
+    - python3-pip
+    - python3-tabulate
+    - rpm
+    - rpmdevtools
+    - rsync
+    - vagrant
+    - vim-enhanced
+    homebrew_packages:
+    - neovim
+
+  tasks:
+  - name: 📦 Install packages from Fedora repos
+    become: yes
+    dnf:
+      name: "{{ item }}"
+      state: present
+    loop: "{{ basic_packages|flatten(levels=1) }}"
+    when: ansible_facts['system'] == "Linux"
+    tags:
+    - baseos
+    - packages
+
+  - name: Enable rpmfusion repo
+    become: yes
+    dnf:
+      name: "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+      state: present
+    when: ansible_facts['system'] == "Linux"
+    tags:
+    - baseos
+    - packages
+
+  - name: 📦 Install rpmfusion-free-release
+    become: yes
+    dnf:
+      name: rpmfusion-free-release
+      state: present
+    when: ansible_facts['system'] == "Linux"
+    tags:
+    - baseos
+    - packages
+
+  - name: 📦 Install third-party packages
+    become: yes
+    dnf:
+      name: "{{ item }}"
+      state: present
+    loop:
+    - vlc
+    when: ansible_facts['system'] == "Linux"
+    tags:
+    - baseos
+    - packages
+
+  - name: Install packages from homebrew
+    command: "brew install {{ item }}"
+    loop: "{{ homebrew_packages|flatten(levels=1) }}"
+    when: ansible_facts['system'] == "Darwin"
+    tags:
+    - baseos
+    - packages
+
+  - name: Name Aliyun VM host
+    become: yes
+    lineinfile:
+      path: /etc/hosts
+      state: present
+      line: "{{ aliyun_vm_ip }}  aliyun-vm"
+      backup: yes
+    tags:
+    - baseos
+
+  - name: Create data directories
+    become: yes
+    file:
+      path: "{[ item }}"
+      state: directory
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+    loop:
+    - "{{ vagrant_home }}"
+    - "{{ vagrant_libvirt_images_dir }}"
+
+  - name: Create code directory
+    file:
+      path: "{{ item }}"
+      state: directory
+    loop:
+    - "{{ ansible_user_dir }}/code"
+    - "{{ ansible_user_dir }}/vagrant-machines"
+    tags:
+    - baseos
+
+  - name: Set git global config
+    command: "git config --global {{ item }}"
+    loop:
+    - "alias.br branch"
+    - "alias.cm commit"
+    - "alias.co checkout"
+    - "alias.st status"
+    - "color.branch true"
+    - "color.diff true"
+    - "color.status true"
+    - "color.ui true"
+    - "core.editor vim"
+    - "user.name {{ git_user_name }}"
+    - "user.email {{ git_user_email }}"
+    tags:
+    - git-config
+
+  - name: Create go home directory
+    file:
+      path: "{{ go_home }}"
+      state: directory
+    tags:
+    - lsp
+    - golang
+
+  - name: ✍️ Install gopls LSP server
+    command: "go get golang.org/x/tools/gopls@latest"
+    environment:
+      GOPATH: "{{ go_home }}"
+      GOPROXY: "{{ go_proxy }}"
+    tags:
+    - lsp
+    - golang
+
+  - name: Create npm directory
+    file:
+      path: "{{ ansible_user_dir }}/npm"
+      state: directory
+    tags:
+    - lsp
+    - npm
+
+  - name: ✍️ Install LSP servers
+    command: "npm install {{ item }}"
+    args:
+      chdir: "{{ ansible_user_dir }}/npm"
+    loop:
+    - bash-language-server
+    - dockerfile-language-server-nodejs
+    - pyright
+    - typescript
+    - typescript-language-server
+    tags:
+    - lsp
+    - npm
+
+  - name: Ensure fedora.upn
+    lineinfile:
+      path: "{{ ansible_user_dir }}/.fedora.upn"
+      state: present
+      line: "{{ fedora_username }}"
+    tags:
+    - fedora-community
+
+  # Manage dotfiles
+
+  - name: Install ideavimrc
+    template:
+      src: ideavimrc.j2
+      dest: "{{ ansible_user_dir }}/.ideavimrc"
+      backup: yes
+    tags:
+    - dotfiles
+    - ideavimrc
+
+  - name: Install vimrc
+    template:
+      src: vimrc.j2
+      dest: "{{ ansible_user_dir }}/.vimrc"
+      backup: yes
+    tags:
+    - dotfiles
+    - vimrc
+
+  - name: Install neovim init.vim
+    template:
+      src: nvim-init.vim.j2
+      dest: "{{ ansible_user_dir }}/.config/nvim/init.vim"
+      backup: yes
+    tags:
+    - dotfiles
+    - nvim-init
+ 
+  - name: Install bashrc.common
+    template:
+      src: bashrc.common.j2
+      dest: "{{ ansible_user_dir }}/.bashrc.common"
+      backup: yes
+    tags:
+    - dotfiles
+    - bashrc
+ 
+  - name: Install bashrc
+    template:
+      src: bashrc.j2
+      dest: "{{ ansible_user_dir }}/.bashrc"
+      backup: yes
+    when: ansible_facts['system'] == "Linux"
+    tags:
+    - dotfiles
+    - bashrc
+ 
+  - name: Install bashrc
+    template:
+      src: bashrc.macos.j2
+      dest: "{{ ansible_user_dir }}/.bashrc"
+      backup: yes
+    when: ansible_facts['system'] == "Darwin"
+    tags:
+    - dotfiles
+    - bashrc
+
+  - name: Download homebrew installation script
+    get_url:
+      url: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+      dest: /tmp/homebrew-install.sh
+    when: ansible_facts['system'] == "Darwin"
+    tags:
+    - homebrew
+
+  - name: Install homebrew
+    command: /tmp/homebrew-install.sh
+    when: ansible_facts['system'] == "Darwin"
+    tags:
+    - homebrew
