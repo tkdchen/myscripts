@@ -33,7 +33,6 @@
     - mariadb-devel
     - neovim
     - npm
-    - onedrive
     - podman
     - podman-compose
     - postgresql
@@ -268,3 +267,25 @@
     when: ansible_facts['system'] == "Darwin"
     tags:
     - homebrew
+
+  - name: Install onedrive CLI
+    become: yes
+    dnf:
+      name: onedrive
+      state: present
+    when: ansible_facts['system'] == "Linux"
+    tags:
+    - onedrive
+  - name: Run onedrive
+    command: "onedrive --display-config"
+    when: ansible_facts['system'] == "Linux"
+    tags:
+    - onedrive
+  - name: Install sync_files
+    copy:
+      src: "onedrive-sync-files"
+      dest: "{{ ansible_user_dir }}/.config/onedrive/sync_list"
+      backup: yes
+    when: ansible_facts['system'] == "Linux"
+    tags:
+    - onedrive
