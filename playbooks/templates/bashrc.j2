@@ -47,6 +47,8 @@ alias di='docker images'
 
 alias my-bodhi-updates='bodhi updates query --user {{ fedora_username }}'
 
+alias onedrive-sync='onedrive --synchronize --verbose'
+
 function q-connect-network
 {
     local -r networkname=$(nmcli --fields name c show | sed '1 d' | sed -e 's/ \+$//' | dmenu_go)
