@@ -33,6 +33,7 @@
     - mariadb-devel
     - neovim
     - npm
+    - onedrive
     - podman
     - podman-compose
     - postgresql
