@@ -12,4 +12,5 @@ PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
 PATH="/usr/local/opt/krb5/bin:$PATH"
 PATH="/usr/local/opt/krb5/sbin:$PATH"
 PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+PATH="{{ ansible_user_dir }}/Library/Python/{{ ansible_python.version.major }}.{{ ansible_python.version.minor }}/bin:$PATH"
 export PATH
