@@ -199,8 +199,8 @@
   # Manage dotfiles
 
   - name: Install ideavimrc
-    template:
-      src: ideavimrc.j2
+    copy:
+      src: ideavimrc
       dest: "{{ ansible_user_dir }}/.ideavimrc"
       backup: yes
     tags:
@@ -208,8 +208,8 @@
     - ideavimrc
 
   - name: Install vimrc
-    template:
-      src: vimrc.j2
+    copy:
+      src: vimrc
       dest: "{{ ansible_user_dir }}/.vimrc"
       backup: yes
     tags:
@@ -217,8 +217,8 @@
     - vimrc
 
   - name: Install neovim init.vim
-    template:
-      src: nvim-init.vim.j2
+    copy:
+      src: nvim-init.vim
       dest: "{{ ansible_user_dir }}/.config/nvim/init.vim"
       backup: yes
     tags:
