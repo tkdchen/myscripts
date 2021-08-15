@@ -247,7 +247,7 @@
   - name: Install bashrc
     template:
       src: bashrc.macos.j2
-      dest: "{{ ansible_user_dir }}/.bashrc"
+      dest: "{{ ansible_user_dir }}/.bash_profile"
       backup: yes
     when: ansible_facts['system'] == "Darwin"
     tags:
