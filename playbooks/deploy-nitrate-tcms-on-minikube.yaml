@@ -1,0 +1,97 @@
+---
+- hosts: localhost
+
+  tasks:
+  - name: Create nitrate-tcms namespace
+    k8s:
+      name: nitrate-tcms
+      api_version: v1
+      kind: Namespace
+      state: present
+
+  - name: Create 3 persistent volumes
+    k8s:
+      state: present
+      definition:
+        apiVersion: v1
+        kind: PersistentVolume
+        metadata:
+          name: "{{ item }}"
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          capacity:
+            storage: 1Gi
+          hostPath:
+            path: "/data/{{ item }}/"
+    loop:
+    - pv0001
+    - pv0002
+    - pv0003
+
+  - name: Run httpd
+    k8s:
+      namespace: nitrate-tcms
+      state: present
+      definition:
+        apiVersion: v1
+        kind: Deployment
+        metadata:
+          name: frontend
+          labels:
+            app: frontend
+        spec:
+          replicas: 2
+          selector:
+            matchLabels:
+              app: frontend
+          template:
+            metadata:
+              labels:
+                app: frontend
+            spec:
+              containers:
+              - name: httpd-webapp
+                image: httpd:2.4-alpine
+                ports:
+                - containerPort: 80
+
+  - name: Create service for the httpd frontend
+    k8s:
+      namespace: nitrate-tcms
+      state: present
+      definition:
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: frontend
+        spec:
+          selector:
+            app: frontend
+          ports:
+            - protocol: TCP
+              port: 80
+              targetPort: 80
+
+  - name: Expose the frontend service
+    k8s:
+      namespace: nitrate-tcms
+      state: present
+      definition:
+        apiVersion: networking.k8s.io/v1
+        kind: Ingress
+        metadata:
+          name: frontend
+          annotations:
+            nginx.ingress.kubernetes.io/rewrite-target: /
+        spec:
+          rules:
+          - http:
+              paths:
+              - path: /
+                pathType: Prefix
+                backend:
+                  service:
+                    name: frontend
+                    port:
+                      number: 80
