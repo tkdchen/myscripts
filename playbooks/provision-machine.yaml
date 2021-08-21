@@ -289,3 +289,4 @@
     when: ansible_facts['system'] == "Linux"
     tags:
     - onedrive
+    - onedrive-configs
