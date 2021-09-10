@@ -24,3 +24,6 @@ set laststatus=2
 set t_Co=256
 
 filetype plugin on
+
+set termguicolors
+let base16colorspace=256
