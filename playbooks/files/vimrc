@@ -1,29 +1,100 @@
+" vim: foldmethod=marker
+"
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
 call plug#begin('~/.vim/plugged')
-Plug 'scrooloose/nerdtree'
-Plug 'mileszs/ack.vim'
-Plug 'tpope/vim-fugitive'
-Plug 'kien/ctrlp.vim'
-Plug 'morhetz/gruvbox'
 Plug 'chriskempson/base16-vim'
+Plug 'kien/ctrlp.vim'
+Plug 'mileszs/ack.vim'
+Plug 'morhetz/gruvbox'
+Plug 'tpope/vim-fugitive'
+
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+
+" {{{ Filetypes
+Plug 'cespare/vim-toml'
+Plug 'ekalinin/Dockerfile.vim'
+Plug 'Glench/Vim-Jinja2-Syntax'
+Plug 'marshallward/vim-restructuredtext'
+Plug 'martinda/Jenkinsfile-vim-syntax'
+" }}}
+
+" {{{ JavaScript
+Plug 'pangloss/vim-javascript'
+Plug 'HerringtonDarkholme/yats.vim'  " Yet Another TypeScript Syntax
+" }}}
+" {{{ Python
+Plug 'Vimjas/vim-python-pep8-indent'
+Plug 'vim-python/python-syntax'
+" }}}
 call plug#end()
+
+set encoding=UTF-8
+filetype plugin on
 
 syn on
 filetype plugin indent on
+set background=dark
+set cinoptions+=(0
 set expandtab
-" set foldmethod=syntax
+set foldmethod=indent
 set guioptions-=T
+set laststatus=2
 set listchars=eol:$,tab:>-,trail:.
 set nohlsearch
 set nonumber
+set ruler
 set smartindent
-set cinoptions+=(0
-set laststatus=2
 set t_Co=256
 
-filetype plugin on
+
+let mapleader=","
 
 set termguicolors
 let base16colorspace=256
+
+colorscheme base16-ashes
+
+" {{{ Key bindings
+nnoremap                <F3>              /<c-r><c-w>
+
+" Bindings for tabs
+nnoremap <silent>       <leader>th      :tabfirst<CR>
+nnoremap <silent>       <leader>tk      :tabnext<CR>
+nnoremap <silent>       <leader>tj      :tabprev<CR>
+nnoremap <silent>       <leader>tl      :tablast<CR>
+nnoremap                <leader>tt      :tabedit<Space>
+nnoremap <silent>       <leader>tn      :tabnext<Space>
+nnoremap <silent>       <leader>tm      :tabm<Space>
+nnoremap <silent>       <leader>td      :tabclose<CR>
+
+nnoremap <silent>       <leader>w       :w<CR>
+nnoremap <silent>       <leader>ck      :cclose<CR>
+nnoremap <silent>       <leader>cn      :cnext<CR>
+nnoremap <silent>       <leader>co      :copen<CR>
+nnoremap                <leader>f       :Ack<SPACE>"<C-r><C-w>"<SPACE>
+nnoremap                <leader>vg      :vimgrep<SPACE>/<C-R><C-W>/<SPACE>**/*.py
+nnoremap <silent>       <leader>er      :vsplit ~/.vimrc<CR>
+nnoremap                <leader>st      :tag<SPACE>
+nnoremap                <leader>cs      :colorscheme<SPACE>
+nnoremap <silent>       <ESC><ESC>      :nohlsearch<CR>
+
+" Copy file path in current buffer
+nnoremap <silent>       <leader>cfp     :let @+ = expand("%")<CR>
+" }}}
+" {{{ NERDTree
+let NERDTreeIgnore=['\.pyc$', '\~$', '\.swp', '\.venv', '\.vscode', '\.idea', '\.git$']
+let NERDTreeShowHidden=1
+
+nnoremap <silent>       <C-\>           :NERDTreeToggle<CR>
+nnoremap <silent>       <C-A-F>         :NERDTreeFind<CR>
+" }}}
+" {{{ CtrlP
+set wildignore+=*.swp,*.pyc
+let g:ctrlp_custom_ignore = 'build\|dist\|.git\|.env\|node_modules\|htmlcov\|target/html'
+
+nnoremap                <leader>bs       :CtrlPBufTag<CR>
+nnoremap                <leader>l       :CtrlPBuffer<CR>
+" }}}
