@@ -10,6 +10,9 @@ Plug 'mileszs/ack.vim'
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-fugitive'
 
+Plug 'jceb/vim-orgmode', { 'tag': 'v0.6.0' }
+Plug 'tpope/vim-speeddating', { 'tag': 'v20151024' }
+
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 
@@ -97,4 +100,7 @@ let g:ctrlp_custom_ignore = 'build\|dist\|.git\|.env\|node_modules\|htmlcov\|tar
 
 nnoremap                <leader>bs       :CtrlPBufTag<CR>
 nnoremap                <leader>l       :CtrlPBuffer<CR>
+" }}}
+" {{{ org-mode
+let g:org_todo_keywords=['TODO', 'DOING', '|', 'DONE', 'CANCELED']
 " }}}
