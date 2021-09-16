@@ -126,8 +126,6 @@ autocmd BufRead,BufNewFile *.yaml set textwidth=100
 " }}}
 " {{{ .pypirc
 autocmd BufRead,BufNewFile .pypirc set ft=dosini
-autocmd BufRead,BufNewFile *.yml set shiftwidth=2
-autocmd BufRead,BufNewFile *.yml set tabstop=2
 " }}}
 " }}}
 
