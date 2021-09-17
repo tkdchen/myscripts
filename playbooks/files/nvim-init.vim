@@ -194,11 +194,8 @@ nnoremap <silent>       <F4>            :call QToggleListCharsShow()<CR>
 " {{{ JavaScript
 let g:javascript_plugin_jsdoc = 1
 " }}}
-" {{{ Neovim LSP
-let g:LanguageClient_serverCommands = {
-    \ 'python': ['pyls', '-vv', '--log-file', '~/pyls.log'],
-    \ }
 
+" {{{ Neovim LSP
 :lua <<EOF
 local lsp_config_callback = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
