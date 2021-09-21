@@ -19,6 +19,8 @@ Plug 'preservim/nerdcommenter'
 Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
 
+Plug 'Yggdroot/indentLine'
+
 " {{{ Filetypes
 Plug 'cespare/vim-toml'
 Plug 'ekalinin/Dockerfile.vim'
