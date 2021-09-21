@@ -16,6 +16,9 @@ Plug 'tpope/vim-speeddating', { 'tag': 'v20151024' }
 Plug 'preservim/nerdtree'
 Plug 'preservim/nerdcommenter'
 
+Plug 'honza/vim-snippets'
+Plug 'SirVer/ultisnips'
+
 " {{{ Filetypes
 Plug 'cespare/vim-toml'
 Plug 'ekalinin/Dockerfile.vim'
@@ -93,6 +96,9 @@ let NERDTreeShowHidden=1
 
 nnoremap <silent>       <C-\>           :NERDTreeToggle<CR>
 nnoremap <silent>       <C-A-F>         :NERDTreeFind<CR>
+" }}}
+" {{{ nerdcommenter
+let g:NERDSpaceDelims = 1
 " }}}
 " {{{ CtrlP
 set wildignore+=*.swp,*.pyc
