@@ -13,8 +13,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'jceb/vim-orgmode', { 'tag': 'v0.6.0' }
 Plug 'tpope/vim-speeddating', { 'tag': 'v20151024' }
 
-Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/nerdtree'
+Plug 'preservim/nerdtree'
+Plug 'preservim/nerdcommenter'
 
 " {{{ Filetypes
 Plug 'cespare/vim-toml'
