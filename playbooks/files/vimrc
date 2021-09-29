@@ -115,10 +115,20 @@ nnoremap                <leader>l       :CtrlPBuffer<CR>
 " {{{ org-mode
 let g:org_todo_keywords=['TODO', 'DOING', '|', 'DONE', 'CANCELED']
 " }}}
+" {{{ YouCompleteMe
+" Following three configs make it compatible with the UltiSnips to work well.
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+" }}}
 " {{{ UltiSnips
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "custom-snippets"]
 let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 " }}}
