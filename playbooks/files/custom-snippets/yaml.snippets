@@ -1,0 +1,33 @@
+# Kubernetes snippets
+
+snippet k8s-service "Kubernetes Service"
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${1:name}
+spec:
+  selector:
+    app: ${2:app_name}
+  ports:
+    - protocol: TCP
+      port: ${3:8080}
+      targetPort: ${3:8080}
+$0
+endsnippet
+
+# Tekton
+
+snippet tkn-task "Tekton task"
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: ${1:name}
+spec:
+  steps:
+  - name: ${2:step_name}
+    image: ${3:debian:stable}
+    command:
+    - ${4:command}
+$0
+endsnippet
+

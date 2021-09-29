@@ -216,6 +216,19 @@
     - dotfiles
     - vimrc
 
+  - name: Ensure .vim directory exists
+    file:
+      path: "{{ ansible_user_dir }}/.vim"
+      stat: directory
+
+  - name: Copy custom snippets
+    copy:
+      src: custom-snippets
+      dest: "{{ ansible_user_dir }}/.vim"
+      backup: yes
+    tags:
+    - vimrc
+
   - name: Install neovim init.vim
     copy:
       src: nvim-init.vim
