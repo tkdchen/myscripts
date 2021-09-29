@@ -10,6 +10,8 @@ Plug 'mileszs/ack.vim'
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-fugitive'
 
+Plug 'ycm-core/YouCompleteMe'
+
 Plug 'jceb/vim-orgmode', { 'tag': 'v0.6.0' }
 Plug 'tpope/vim-speeddating', { 'tag': 'v20151024' }
 
