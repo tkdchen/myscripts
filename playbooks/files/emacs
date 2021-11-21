@@ -7,19 +7,26 @@
 (require 'base16-theme)
 (require 'yasnippet)
 
+(column-number-mode 1)
+
+(setq-default indent-tabs-mode nil)
+(setq-default line-spacing 3)
+(set-frame-font "Hack 14" nil t)
+
 (evil-mode 1)
 (global-company-mode 1)
 (global-emojify-mode 1)
 (yas-global-mode 1)
 
-(setq indent-tabs-mode nil)
-(setq line-spacing 3)
-(set-frame-font "Hack 14" nil t)
-
-(load-theme 'base16-ashes t)
+;; (load-theme 'base16-ashes t)
 
 
 ;; (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+
+(add-hook 'conf-mode-hook
+          (lambda ()
+            (setq tab-width 4)
+            ))
 
 (add-hook 'python-mode-hook
           (lambda ()
@@ -67,13 +74,17 @@
 (dolist (charset '(kana han symbol cjk-misc bopomofo))
   (set-fontset-font (frame-parameter nil 'font)
 		    charset
-		    (font-spec :family "Noto Sans Mono CJK SC" :size 22)))
+		    (font-spec :family "Noto Sans Mono CJK SC" :size 20)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#1c2023" "#c7ae95" "#95c7ae" "#aec795" "#ae95c7" "#c795ae" "#ae95c7" "#c7ccd1"])
+ '(custom-safe-themes
+   '("146061a7ceea4ccc75d975a3bb41432382f656c50b9989c7dc1a7bb6952f6eb4" default))
  '(package-selected-packages
    '(yasnippet yasnippet-snippets go-mode yaml-mode lsp-ui lsp-pyright lsp-jedi lsp-ivy lsp-docker jenkinsfile-mode gruvbox-theme graphviz-dot-mode evil emojify dockerfile-mode company bind-key base16-theme)))
 (custom-set-faces
