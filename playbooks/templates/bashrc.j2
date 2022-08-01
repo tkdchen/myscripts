@@ -1,4 +1,4 @@
-# vim: foldmethod=marker ts=4 sw=4 autoindent
+# vim: foldmethod=marker ts=4 sw=4 autoindent ft=sh
 # .bashrc
 
 if [ -f /etc/bashrc ]; then
@@ -19,9 +19,6 @@ if [ ! -e "$VAGRANT_HOME" ]; then
     echo "Create it before using vagrant and ensure it is accessible."
 fi
 
-export DENO_INSTALL="{{ ansible_user_dir }}/.deno"
-export PATH="$DENO_INSTALL/bin:$PATH"
-
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 
@@ -35,30 +32,16 @@ export XMODIFIERS=@im=ibus
 
 export REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
 
-alias ff='firefox'
-
-#alias docker=podman
-
-alias pacup='sudo dnf update'
-alias paci='sudo dnf install'
-alias pacq='sudo dnf repoquery'
-
-alias di='docker images'
-
-alias my-bodhi-updates='bodhi updates query --user {{ fedora_username }}'
-
+alias bat='bat --theme TwoDark'
+alias k=kubectl
 alias onedrive-sync='onedrive --synchronize --verbose'
+alias pm=podman
+alias t=tkn
 
 function q-connect-network
 {
     local -r networkname=$(nmcli --fields name c show | sed '1 d' | sed -e 's/ \+$//' | dmenu_go)
     [[ -n "$networkname" ]] && nmcli --ask c up "$networkname"
-}
-
-function q-notes-open
-{
-    local -r notefile=$(find $HOME/Documents/My/notes/ -name "*.org" -exec basename '{}' \; | dmenu_go)
-    [[ -n "$notefile" ]] && emacs "$HOME/Documents/My/notes/$notefile" &
 }
 
 function pypi-mirrors-list
@@ -71,8 +54,6 @@ https://mirrors.cloud.tencent.com/pypi/simple
 '
     echo "$fast_pypi_mirros" | dmenu_go
 }
-
-source "$HOME/.cargo/env"
 
 export VAGRANT_LIBVIRT_IMAGES="{{ vagrant_libvirt_images_dir }}"
 if [ ! -e "${VAGRANT_LIBVIRT_IMAGES}" ]; then
