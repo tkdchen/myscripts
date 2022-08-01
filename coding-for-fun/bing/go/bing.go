@@ -1,8 +1,9 @@
 package main
 
 /**
- 	TODO: download photo from bing.com
-	TODO: remove old photos from download directory
+ 	TODO: do not set argument idx in the querystring
+ 	TODO: set argument n in the querystring
+ 	TODO: iterate the images rather than just handling the first one
 */
 
 import (
