@@ -32,27 +32,17 @@ export XMODIFIERS=@im=ibus
 
 export REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
 
-alias bat='bat --theme TwoDark'
-alias k=kubectl
-alias onedrive-sync='onedrive --synchronize --verbose'
-alias pm=podman
-alias t=tkn
-
-function q-connect-network
-{
-    local -r networkname=$(nmcli --fields name c show | sed '1 d' | sed -e 's/ \+$//' | dmenu_go)
+q-connect-network() {
+    local -r networkname=$(nmcli --fields name c show | sed '1 d' | sed -e 's/ \+$//' | fzf)
     [[ -n "$networkname" ]] && nmcli --ask c up "$networkname"
 }
 
-function pypi-mirrors-list
-{
-    declare -a fast_pypi_mirros
+pypi-mirrors-list() {
     fast_pypi_mirros='https://pypi.tuna.tsinghua.edu.cn/simple
 https://mirrors.aliyun.com/pypi/simple/
 https://pypi.doubanio.com/simple
-https://mirrors.cloud.tencent.com/pypi/simple
-'
-    echo "$fast_pypi_mirros" | dmenu_go
+https://mirrors.cloud.tencent.com/pypi/simple'
+    echo "$fast_pypi_mirros" | fzf
 }
 
 export VAGRANT_LIBVIRT_IMAGES="{{ vagrant_libvirt_images_dir }}"
