@@ -1,0 +1,11 @@
+default:
+  image: quay.io/centos/centos:stream8
+
+ansible-lint:
+  script: |
+    dnf install -y epel-release
+    dnf install -y ansible ansible-collection-community-general
+    python3.8 -m venv testenv
+    testenv/bin/python3 -m pip install tox
+    testenv/bin/python3 -m tox -e lint
+
