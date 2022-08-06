@@ -8,6 +8,8 @@
     go_proxy: "https://goproxy.io,direct"
     vagrant_home: "/var/local/vagrant_home"
     vagrant_libvirt_images_dir: "/var/local/vagrant_libvirt_images"
+    bash_completion_user_dir: "{{ ansible_user_dir }}/.local/share/bash-completion"
+    local_bash_completion_dir: "{{ bash_completion_user_dir }}/completions"
     basic_packages:
     - bash-completion
     - buildah
@@ -303,3 +305,40 @@
     tags:
     - onedrive
     - onedrive-configs
+
+  # Bash completions
+  #
+  - name: Ensure local completions directory exists
+    file:
+      path: "{{ local_bash_completion_dir }}"
+      state: directory
+    tags:
+      - bash-completion
+
+  - name: Install oc completion
+    shell: |
+      if [ -e "{{ ansible_user_dir }}/.local/bin/oc" ] || [ -e /usr/bin/oc ] || [ -e /usr/local/bin/oc ]; then
+        oc completion bash > oc.bash
+      fi
+    args:
+      chdir: "{{ local_bash_completion_dir }}"
+    tags:
+      - bash-completion
+
+  - name: Install onedrive completion
+    copy:
+      src: onedrive-completion.bash
+      dest: "{{ local_bash_completion_dir }}/onedrive.bash"
+      backup: yes
+    tags:
+      - bash-completion
+
+  - name: Install tkn completion
+    shell: |
+      if [ -e "{{ ansible_user_dir }}/.local/bin/tkn" ] || [ -e /usr/bin/tkn ] || [ -e /usr/local/bin/tkn ]; then
+        tkn completion bash > tkn.bash
+      fi
+    args:
+      chdir: "{{ local_bash_completion_dir }}"
+    tags:
+      - bash-completion
