@@ -324,7 +324,7 @@
       tags:
         - homebrew
 
-    - name: Install onedrive CLI
+    - name: onedrive - install onedrive CLI
       become: true
       ansible.builtin.dnf:
         name: onedrive
@@ -332,12 +332,12 @@
       when: ansible_facts['system'] == "Linux"
       tags:
         - onedrive
-    - name: Run onedrive
+    - name: onedrive - run onedrive
       ansible.builtin.command: "onedrive --display-config"
       when: ansible_facts['system'] == "Linux"
       tags:
         - onedrive
-    - name: Install sync_files
+    - name: onedrive - install sync_files
       ansible.builtin.copy:
         src: "onedrive-sync-files"
         dest: "{{ ansible_user_dir }}/.config/onedrive/sync_list"
@@ -352,7 +352,7 @@
 
     # Bash completions
     #
-    - name: Ensure local completions directory exists
+    - name: bash-completion - ensure local completions directory exists
       ansible.builtin.file:
         path: "{{ local_bash_completion_dir }}"
         state: directory
@@ -360,7 +360,7 @@
       tags:
         - bash-completion
 
-    - name: Install completions
+    - name: bash-completion - install completions
       ansible.builtin.copy:
         src: "{{ item }}"
         dest: "{{ bash_completion_user_dir }}"
