@@ -138,20 +138,23 @@
       tags:
         - baseos
 
-    - name: Set git global config  # noqa: no-changed-when
-      ansible.builtin.command: "git config --global {{ item }}"
+    - name: Set git global config
+      community.general.git_config:
+        name: "{{ item.config }}"
+        scope: global
+        value: "{{ item.value }}"
       loop:
-        - "alias.br branch"
-        - "alias.cm commit"
-        - "alias.co checkout"
-        - "alias.st status"
-        - "color.branch true"
-        - "color.diff true"
-        - "color.status true"
-        - "color.ui true"
-        - "core.editor vim"
-        - "user.name {{ git_user_name }}"
-        - "user.email {{ git_user_email }}"
+        - { config: 'alias.br', value: 'branch' }
+        - { config: 'alias.cm', value: 'commit' }
+        - { config: 'alias.co', value: 'checkout' }
+        - { config: 'alias.st', value: 'status' }
+        - { config: 'alias.st', value: 'status' }
+        - { config: 'color.branch', value: 'true' }
+        - { config: 'color.diff', value: 'true' }
+        - { config: 'color.ui', value: 'true' }
+        - { config: 'core.editor', value: 'vim' }
+        - { config: 'user.name', value: 'Chenxiong Qi' }
+        - { config: 'user.email', value: 'qcxhome@gmail.com' }
       tags:
         - git-config
 
