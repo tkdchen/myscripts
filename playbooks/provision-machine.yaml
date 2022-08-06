@@ -12,7 +12,9 @@
     local_bash_completion_dir: "{{ bash_completion_user_dir }}/completions"
     basic_packages:
     - bash-completion
+    - bat
     - buildah
+    - cli  # tkn
     - emacs
     - fedpkg
     - gcc
@@ -35,6 +37,7 @@
     - mariadb-devel
     - neovim
     - npm
+    - onedrive
     - podman
     - podman-compose
     - postgresql
@@ -43,6 +46,7 @@
     - python3-devel
     - python3-pip
     - python3-tabulate
+    - ripgrep
     - rpm
     - rpmdevtools
     - rsync
