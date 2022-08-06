@@ -61,7 +61,7 @@
       dnf:
         name: "{{ item }}"
         state: present
-      loop: "{{ basic_packages|flatten(levels=1) }}"
+      loop: "{{ basic_packages | flatten(levels=1) }}"
       when: ansible_facts['system'] == "Linux"
       tags:
         - baseos
@@ -101,7 +101,7 @@
 
     - name: Install packages from homebrew
       command: "brew install {{ item }}"
-      loop: "{{ homebrew_packages|flatten(levels=1) }}"
+      loop: "{{ homebrew_packages | flatten(levels=1) }}"
       when: ansible_facts['system'] == "Darwin"
       tags:
         - baseos
