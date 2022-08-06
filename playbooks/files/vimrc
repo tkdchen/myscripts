@@ -7,13 +7,13 @@ call plug#begin('~/.vim/plugged')
 Plug 'chriskempson/base16-vim'
 Plug 'kien/ctrlp.vim'
 Plug 'mileszs/ack.vim'
-Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-fugitive'
 
 Plug 'ycm-core/YouCompleteMe'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
-Plug 'jceb/vim-orgmode', { 'tag': 'v0.6.0' }
-Plug 'tpope/vim-speeddating', { 'tag': 'v20151024' }
+" Plug 'jceb/vim-orgmode', { 'tag': 'v0.6.0' }
+" Plug 'tpope/vim-speeddating', { 'tag': 'v20151024' }
 
 Plug 'preservim/nerdtree'
 Plug 'preservim/nerdcommenter'
@@ -22,6 +22,9 @@ Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
 
 Plug 'Yggdroot/indentLine'
+
+Plug 'godlygeek/tabular'
+Plug 'preservim/vim-markdown'
 
 " {{{ Filetypes
 Plug 'cespare/vim-toml'
@@ -39,6 +42,8 @@ Plug 'HerringtonDarkholme/yats.vim'  " Yet Another TypeScript Syntax
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'vim-python/python-syntax'
 " }}}
+
+Plug 'joshdick/onedark.vim'
 call plug#end()
 
 set encoding=UTF-8
@@ -49,7 +54,8 @@ filetype plugin indent on
 set background=dark
 set cinoptions+=(0
 set expandtab
-set foldmethod=indent
+set foldmethod=manual  " Set concrete method for individual file type below
+set foldlevel=1
 set guioptions-=T
 set laststatus=2
 set listchars=eol:$,tab:>-,trail:.
@@ -58,14 +64,14 @@ set nonumber
 set ruler
 set smartindent
 set t_Co=256
-
+set tabstop=4
 
 let mapleader=","
 
 set termguicolors
 let base16colorspace=256
 
-colorscheme base16-ashes
+colorscheme onedark
 
 " {{{ Key bindings
 nnoremap                <F3>              /<c-r><c-w>
@@ -85,50 +91,77 @@ nnoremap <silent>       <leader>ck      :cclose<CR>
 nnoremap <silent>       <leader>cn      :cnext<CR>
 nnoremap <silent>       <leader>co      :copen<CR>
 nnoremap                <leader>f       :Ack<SPACE>"<C-r><C-w>"<SPACE>
-nnoremap                <leader>vg      :vimgrep<SPACE>/<C-R><C-W>/<SPACE>**/*.py
+nnoremap                <leader>vg      :vimgrep<SPACE>/<C-R><C-W>/<SPACE>**/*.*
 nnoremap <silent>       <leader>er      :vsplit ~/.vimrc<CR>
 nnoremap                <leader>st      :tag<SPACE>
-nnoremap                <leader>cs      :colorscheme<SPACE>
+nnoremap                <leader>ccs     :colorscheme<SPACE>
 nnoremap <silent>       <ESC><ESC>      :nohlsearch<CR>
 
+nnoremap                <leader>h       :h<SPACE><C-r><C-w>
 " Copy file path in current buffer
 nnoremap <silent>       <leader>cfp     :let @+ = expand("%")<CR>
 " }}}
+
 " {{{ NERDTree
 let NERDTreeIgnore=['\.pyc$', '\~$', '\.swp', '\.venv', '\.vscode', '\.idea', '\.git$']
 let NERDTreeShowHidden=1
 
 nnoremap <silent>       <C-\>           :NERDTreeToggle<CR>
-nnoremap <silent>       <C-A-F>         :NERDTreeFind<CR>
+" Reveal current file in the NERDTree
+nnoremap <silent>       <leader>rf      :NERDTreeFind<CR>
 " }}}
+
+autocmd BufRead,BufNewFile *.py set foldmethod=indent
+autocmd BufRead,BufNewFile *.py set foldlevel=1
+
+autocmd BufRead,BufNewFile *.sh set shiftwidth=4
+autocmd BufRead,BufNewFile *.sh set tabstop=4
+
 " {{{ nerdcommenter
 let g:NERDDefaultAlign = 'left'
 let g:NERDSpaceDelims = 1
 " }}}
+
 " {{{ CtrlP
 set wildignore+=*.swp,*.pyc
 let g:ctrlp_custom_ignore = 'build\|dist\|.git\|.env\|node_modules\|htmlcov\|target/html'
 
-nnoremap                <leader>bs       :CtrlPBufTag<CR>
+nnoremap                <leader>bs      :CtrlPBufTag<CR>
 nnoremap                <leader>l       :CtrlPBuffer<CR>
 " }}}
-" {{{ org-mode
-let g:org_todo_keywords=['TODO', 'DOING', '|', 'DONE', 'CANCELED']
-" }}}
+
 " {{{ YouCompleteMe
 " Following three configs make it compatible with the UltiSnips to work well.
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
-" }}}
-" {{{ UltiSnips
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
+" let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+" let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+" let g:SuperTabDefaultCompletionType = '<C-n>'
+let g:ycm_enable_semantic_highlighting=1
+let g:ycm_language_server = [
+  \   {
+  \     'name': 'python',
+  \     'cmdline': [expand('~/npm/node_modules/.bin/pyright-langserver'), '--stdio'],
+  \     'filetypes': ['python'],
+  \   },
+  \ ]
 
-let g:UltiSnipsSnippetDirectories=["UltiSnips", "custom-snippets"]
-let g:UltiSnipsEditSplit="vertical"
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+nnoremap <silent>       gd           :YcmCompleter GoTo<CR>
 " }}}
+
+" {{{ UltiSnips
+" let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+" let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+" let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" let g:UltiSnipsSnippetDirectories=["UltiSnips", "custom-snippets"]
+" let g:UltiSnipsEditSplit="vertical"
+" let g:UltiSnipsExpandTrigger="<tab>"
+" let g:UltiSnipsJumpForwardTrigger="<c-b>"
+" let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+" }}}
+
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal_code_blocks = 0
+let g:vim_markdown_fenced_languages = ['python=python']
+" let g:vim_markdown_folding_level = 2
+let g:vim_markdown_folding_style_pythonic = 1
+
