@@ -138,7 +138,7 @@
       tags:
         - baseos
 
-    - name: Set git global config
+    - name: Set git global config  # noqa: no-changed-when
       command: "git config --global {{ item }}"
       loop:
         - "alias.br branch"
@@ -163,7 +163,7 @@
         - lsp
         - golang
 
-    - name: ✍️ Install gopls LSP server
+    - name: ✍️ Install gopls LSP server  # noqa: no-changed-when
       command: "go get golang.org/x/tools/gopls@latest"
       environment:
         GOPATH: "{{ go_home }}"
@@ -180,7 +180,7 @@
         - lsp
         - npm
 
-    - name: ✍️ Install LSP servers
+    - name: ✍️ Install LSP servers  # noqa: no-changed-when
       command: "npm install {{ item }}"
       args:
         chdir: "{{ ansible_user_dir }}/npm"
@@ -319,30 +319,11 @@
       tags:
         - bash-completion
 
-    - name: Install oc completion
-      shell: |
-        if [ -e "{{ ansible_user_dir }}/.local/bin/oc" ] || [ -e /usr/bin/oc ] || [ -e /usr/local/bin/oc ]; then
-          oc completion bash > oc.bash
-        fi
-      args:
-        chdir: "{{ local_bash_completion_dir }}"
-      tags:
-        - bash-completion
-
-    - name: Install onedrive completion
+    - name: Install completions
       copy:
-        src: onedrive-completion.bash
-        dest: "{{ local_bash_completion_dir }}/onedrive.bash"
-        backup: true
-      tags:
-        - bash-completion
-
-    - name: Install tkn completion
-      shell: |
-        if [ -e "{{ ansible_user_dir }}/.local/bin/tkn" ] || [ -e /usr/bin/tkn ] || [ -e /usr/local/bin/tkn ]; then
-          tkn completion bash > tkn.bash
-        fi
-      args:
-        chdir: "{{ local_bash_completion_dir }}"
+        src: "{{ item }}"
+        dest: "{{ bash_completion_user_dir }}"
+        copy: true
+      loop: "{{ lookup('fileglob', 'completions/*.bash', wantlist=True) }}"
       tags:
         - bash-completion
