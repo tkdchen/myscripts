@@ -300,17 +300,27 @@
         - dotfiles
         - bashrc
 
-    - name: Download homebrew installation script
-      ansible.builtin.get_url:
-        url: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
-        dest: /tmp/homebrew-install.sh
+    - name: Homebrew - create working directory
+      ansible.builtin.tempfile:
+        state: file
+        suffix: homebrew
+      register: homebrew_inst_workdir
       when: ansible_facts['system'] == "Darwin"
       tags:
         - homebrew
 
-    - name: Install homebrew
-      ansible.builtin.command: /tmp/homebrew-install.sh
-      when: ansible_facts['system'] == "Darwin"
+    - name: Homebrew - download installation script
+      ansible.builtin.git:
+        repo: https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/install.git
+        dest: "{{ homebrew_inst_workdir.path }}/homebrew"
+        version: master
+      when: ansible_facts['system'] == "Darwin" and homebrew_inst_workdir.path is defined
+      tags:
+        - homebrew
+
+    - name: Homebrew - start to install
+      ansible.builtin.command: "{{ homebrew_inst_workdir.path }}/homebrew/install.sh"
+      when: ansible_facts['system'] == "Darwin" and homebrew_inst_workdir.path is defined
       tags:
         - homebrew
 

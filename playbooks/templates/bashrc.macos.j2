@@ -14,3 +14,9 @@ PATH="/usr/local/opt/krb5/sbin:$PATH"
 PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
 PATH="{{ ansible_user_dir }}/Library/Python/{{ ansible_python.version.major }}.{{ ansible_python.version.minor }}/bin:$PATH"
 export PATH
+
+# Homebrew remote mirrors
+export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
+export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
+export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles"
+
