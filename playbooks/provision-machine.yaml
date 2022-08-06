@@ -323,7 +323,7 @@
       copy:
         src: "{{ item }}"
         dest: "{{ bash_completion_user_dir }}"
-        copy: true
+        backup: true
       loop: "{{ lookup('fileglob', 'completions/*.bash', wantlist=True) }}"
       tags:
         - bash-completion
