@@ -122,8 +122,7 @@
       ansible.builtin.file:
         path: "{[ item }}"
         state: directory
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
+        mode: "0755"
       loop:
         - "{{ vagrant_home }}"
         - "{{ vagrant_libvirt_images_dir }}"
@@ -132,6 +131,7 @@
       ansible.builtin.file:
         path: "{{ item }}"
         state: directory
+        mode: "0755"
       loop:
         - "{{ ansible_user_dir }}/code"
         - "{{ ansible_user_dir }}/vagrant-machines"
@@ -162,6 +162,7 @@
       ansible.builtin.file:
         path: "{{ go_home }}"
         state: directory
+        mode: "0755"
       tags:
         - lsp
         - golang
@@ -179,6 +180,7 @@
       ansible.builtin.file:
         path: "{{ ansible_user_dir }}/npm"
         state: directory
+        mode: "0755"
       tags:
         - lsp
         - npm
@@ -211,6 +213,9 @@
       ansible.builtin.copy:
         src: ideavimrc
         dest: "{{ ansible_user_dir }}/.ideavimrc"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "u=rw,g=r,o=r"
         backup: true
       tags:
         - dotfiles
@@ -220,6 +225,9 @@
       ansible.builtin.copy:
         src: vimrc
         dest: "{{ ansible_user_dir }}/.vimrc"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "u=rw,g=r,o=r"
         backup: true
       tags:
         - dotfiles
@@ -229,11 +237,15 @@
       ansible.builtin.file:
         path: "{{ ansible_user_dir }}/.vim"
         stat: directory
+        mode: "0755"
 
     - name: Copy custom snippets
       ansible.builtin.copy:
         src: custom-snippets
         dest: "{{ ansible_user_dir }}/.vim"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "u=rw,g=r,o=r"
         backup: true
       tags:
         - vimrc
@@ -242,6 +254,9 @@
       ansible.builtin.copy:
         src: nvim-init.vim
         dest: "{{ ansible_user_dir }}/.config/nvim/init.vim"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "u=rw,g=r,o=r"
         backup: true
       tags:
         - dotfiles
@@ -251,6 +266,9 @@
       ansible.builtin.template:
         src: bashrc.common.j2
         dest: "{{ ansible_user_dir }}/.bashrc.common"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "u=rw,g=r,o=r"
         backup: true
       tags:
         - dotfiles
@@ -260,6 +278,9 @@
       ansible.builtin.template:
         src: bashrc.j2
         dest: "{{ ansible_user_dir }}/.bashrc"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "u=rw,g=r,o=r"
         backup: true
       when: ansible_facts['system'] == "Linux"
       tags:
@@ -270,6 +291,9 @@
       ansible.builtin.template:
         src: bashrc.macos.j2
         dest: "{{ ansible_user_dir }}/.bash_profile"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "u=rw,g=r,o=r"
         backup: true
       when: ansible_facts['system'] == "Darwin"
       tags:
@@ -307,6 +331,9 @@
       ansible.builtin.copy:
         src: "onedrive-sync-files"
         dest: "{{ ansible_user_dir }}/.config/onedrive/sync_list"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "u=rw,g=r,o=r"
         backup: true
       when: ansible_facts['system'] == "Linux"
       tags:
@@ -319,6 +346,7 @@
       ansible.builtin.file:
         path: "{{ local_bash_completion_dir }}"
         state: directory
+        mode: "0755"
       tags:
         - bash-completion
 
@@ -326,6 +354,9 @@
       ansible.builtin.copy:
         src: "{{ item }}"
         dest: "{{ bash_completion_user_dir }}"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "u=rw,g=r,o=r"
         backup: true
       loop: "{{ lookup('fileglob', 'completions/*.bash', wantlist=True) }}"
       tags:
