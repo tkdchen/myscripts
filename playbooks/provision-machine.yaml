@@ -58,7 +58,7 @@
   tasks:
     - name: 📦 Install packages from Fedora repos
       become: true
-      dnf:
+      ansible.builtin.dnf:
         name: "{{ item }}"
         state: present
       loop: "{{ basic_packages | flatten(levels=1) }}"
@@ -69,7 +69,7 @@
 
     - name: Enable rpmfusion repo
       become: true
-      dnf:
+      ansible.builtin.dnf:
         name: "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
         state: present
       when: ansible_facts['system'] == "Linux"
@@ -79,7 +79,7 @@
 
     - name: 📦 Install rpmfusion-free-release
       become: true
-      dnf:
+      ansible.builtin.dnf:
         name: rpmfusion-free-release
         state: present
       when: ansible_facts['system'] == "Linux"
@@ -89,7 +89,7 @@
 
     - name: 📦 Install third-party packages
       become: true
-      dnf:
+      ansible.builtin.dnf:
         name: "{{ item }}"
         state: present
       loop:
@@ -100,7 +100,7 @@
         - packages
 
     - name: Install packages from homebrew
-      command: "brew install {{ item }}"
+      ansible.builtin.command: "brew install {{ item }}"
       loop: "{{ homebrew_packages | flatten(levels=1) }}"
       when: ansible_facts['system'] == "Darwin"
       tags:
@@ -109,7 +109,7 @@
 
     - name: Name Aliyun VM host
       become: true
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: /etc/hosts
         state: present
         line: "{{ aliyun_vm_ip }}  aliyun-vm"
@@ -119,7 +119,7 @@
 
     - name: Create data directories
       become: true
-      file:
+      ansible.builtin.file:
         path: "{[ item }}"
         state: directory
         owner: "{{ ansible_user }}"
@@ -129,7 +129,7 @@
         - "{{ vagrant_libvirt_images_dir }}"
 
     - name: Create code directory
-      file:
+      ansible.builtin.file:
         path: "{{ item }}"
         state: directory
       loop:
@@ -139,7 +139,7 @@
         - baseos
 
     - name: Set git global config  # noqa: no-changed-when
-      command: "git config --global {{ item }}"
+      ansible.builtin.command: "git config --global {{ item }}"
       loop:
         - "alias.br branch"
         - "alias.cm commit"
@@ -156,7 +156,7 @@
         - git-config
 
     - name: Create go home directory
-      file:
+      ansible.builtin.file:
         path: "{{ go_home }}"
         state: directory
       tags:
@@ -164,7 +164,7 @@
         - golang
 
     - name: ✍️ Install gopls LSP server  # noqa: no-changed-when
-      command: "go get golang.org/x/tools/gopls@latest"
+      ansible.builtin.command: "go get golang.org/x/tools/gopls@latest"
       environment:
         GOPATH: "{{ go_home }}"
         GOPROXY: "{{ go_proxy }}"
@@ -173,7 +173,7 @@
         - golang
 
     - name: Create npm directory
-      file:
+      ansible.builtin.file:
         path: "{{ ansible_user_dir }}/npm"
         state: directory
       tags:
@@ -181,7 +181,7 @@
         - npm
 
     - name: ✍️ Install LSP servers  # noqa: no-changed-when
-      command: "npm install {{ item }}"
+      ansible.builtin.command: "npm install {{ item }}"
       args:
         chdir: "{{ ansible_user_dir }}/npm"
       loop:
@@ -195,7 +195,7 @@
         - npm
 
     - name: Ensure fedora.upn
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: "{{ ansible_user_dir }}/.fedora.upn"
         state: present
         line: "{{ fedora_username }}"
@@ -205,7 +205,7 @@
     # Manage dotfiles
 
     - name: Install ideavimrc
-      copy:
+      ansible.builtin.copy:
         src: ideavimrc
         dest: "{{ ansible_user_dir }}/.ideavimrc"
         backup: true
@@ -214,7 +214,7 @@
         - ideavimrc
 
     - name: Install vimrc
-      copy:
+      ansible.builtin.copy:
         src: vimrc
         dest: "{{ ansible_user_dir }}/.vimrc"
         backup: true
@@ -223,12 +223,12 @@
         - vimrc
 
     - name: Ensure .vim directory exists
-      file:
+      ansible.builtin.file:
         path: "{{ ansible_user_dir }}/.vim"
         stat: directory
 
     - name: Copy custom snippets
-      copy:
+      ansible.builtin.copy:
         src: custom-snippets
         dest: "{{ ansible_user_dir }}/.vim"
         backup: true
@@ -236,7 +236,7 @@
         - vimrc
 
     - name: Install neovim init.vim
-      copy:
+      ansible.builtin.copy:
         src: nvim-init.vim
         dest: "{{ ansible_user_dir }}/.config/nvim/init.vim"
         backup: true
@@ -245,7 +245,7 @@
         - nvim-init
 
     - name: Install bashrc.common
-      template:
+      ansible.builtin.template:
         src: bashrc.common.j2
         dest: "{{ ansible_user_dir }}/.bashrc.common"
         backup: true
@@ -254,7 +254,7 @@
         - bashrc
 
     - name: Install bashrc
-      template:
+      ansible.builtin.template:
         src: bashrc.j2
         dest: "{{ ansible_user_dir }}/.bashrc"
         backup: true
@@ -264,7 +264,7 @@
         - bashrc
 
     - name: Install bashrc
-      template:
+      ansible.builtin.template:
         src: bashrc.macos.j2
         dest: "{{ ansible_user_dir }}/.bash_profile"
         backup: true
@@ -274,7 +274,7 @@
         - bashrc
 
     - name: Download homebrew installation script
-      get_url:
+      ansible.builtin.get_url:
         url: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
         dest: /tmp/homebrew-install.sh
       when: ansible_facts['system'] == "Darwin"
@@ -282,26 +282,26 @@
         - homebrew
 
     - name: Install homebrew
-      command: /tmp/homebrew-install.sh
+      ansible.builtin.command: /tmp/homebrew-install.sh
       when: ansible_facts['system'] == "Darwin"
       tags:
         - homebrew
 
     - name: Install onedrive CLI
       become: true
-      dnf:
+      ansible.builtin.dnf:
         name: onedrive
         state: present
       when: ansible_facts['system'] == "Linux"
       tags:
         - onedrive
     - name: Run onedrive
-      command: "onedrive --display-config"
+      ansible.builtin.command: "onedrive --display-config"
       when: ansible_facts['system'] == "Linux"
       tags:
         - onedrive
     - name: Install sync_files
-      copy:
+      ansible.builtin.copy:
         src: "onedrive-sync-files"
         dest: "{{ ansible_user_dir }}/.config/onedrive/sync_list"
         backup: true
@@ -313,14 +313,14 @@
     # Bash completions
     #
     - name: Ensure local completions directory exists
-      file:
+      ansible.builtin.file:
         path: "{{ local_bash_completion_dir }}"
         state: directory
       tags:
         - bash-completion
 
     - name: Install completions
-      copy:
+      ansible.builtin.copy:
         src: "{{ item }}"
         dest: "{{ bash_completion_user_dir }}"
         backup: true
