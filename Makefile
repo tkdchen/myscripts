@@ -16,3 +16,10 @@ cleanup-old-bing-wallpapers:
 onedrive-sync:
 	@onedrive --synchronize --verbose
 .PHONY: onedrive-sync
+
+.PHONY: bootstrap
+bootstrap:
+	@sudo dnf install -y \
+		ansible \
+		ansible-collection-community-general
+
