@@ -10,6 +10,7 @@
     vagrant_libvirt_images_dir: "/var/local/vagrant_libvirt_images"
     bash_completion_user_dir: "{{ ansible_user_dir }}/.local/share/bash-completion"
     local_bash_completion_dir: "{{ bash_completion_user_dir }}/completions"
+    local_bin_dir: "{{ ansible_user_dir }}/.local/bin"
     basic_packages:
       - bash-completion
       - bat
@@ -135,6 +136,7 @@
       loop:
         - "{{ ansible_user_dir }}/code"
         - "{{ ansible_user_dir }}/vagrant-machines"
+        - "{{ local_bin_dir }}"
       tags:
         - baseos
 
@@ -371,3 +373,13 @@
       loop: "{{ lookup('fileglob', 'completions/*.bash', wantlist=True) }}"
       tags:
         - bash-completion
+
+    - name: Fedora - install fas-kinit script
+      ansible.builtin.copy:
+        src: "fas-kinit.sh"
+        dest: "{{ local_bin_dir }}/fas-kinit"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        backup: true
+      tags:
+        - fedora
