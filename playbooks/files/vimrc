@@ -4,8 +4,7 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 
 call plug#begin('~/.vim/plugged')
-" TODO: add gitgutter plugin
-Plug 'chriskempson/base16-vim'
+Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -44,6 +43,7 @@ Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'vim-python/python-syntax'
 " }}}
 
+Plug 'chriskempson/base16-vim'
 Plug 'joshdick/onedark.vim'
 call plug#end()
 
