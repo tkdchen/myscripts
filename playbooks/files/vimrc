@@ -117,6 +117,15 @@ autocmd BufRead,BufNewFile *.py set foldlevel=1
 autocmd BufRead,BufNewFile *.sh set shiftwidth=4
 autocmd BufRead,BufNewFile *.sh set tabstop=4
 
+" {{{ fzf
+nnoremap <silent>       <leader>fb      :Buffers<CR>
+nnoremap <silent>       <leader>gbc     :BCommits<CR>
+nnoremap <silent>       <leader>gc      :Commits<CR>
+nnoremap <silent>       <leader>ff      :Files<CR>
+nnoremap <silent>       <leader>ft      :Tags<CR>
+nnoremap <silent>       <leader>rg      :Rg<SPACE>
+" }}}
+
 " {{{ nerdcommenter
 let g:NERDDefaultAlign = 'left'
 let g:NERDSpaceDelims = 1
