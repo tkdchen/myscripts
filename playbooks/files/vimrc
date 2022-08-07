@@ -4,9 +4,8 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 
 call plug#begin('~/.vim/plugged')
+" TODO: add gitgutter plugin
 Plug 'chriskempson/base16-vim'
-Plug 'kien/ctrlp.vim'
-Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-fugitive'
 
 Plug 'ycm-core/YouCompleteMe'
@@ -90,10 +89,8 @@ nnoremap <silent>       <leader>w       :w<CR>
 nnoremap <silent>       <leader>ck      :cclose<CR>
 nnoremap <silent>       <leader>cn      :cnext<CR>
 nnoremap <silent>       <leader>co      :copen<CR>
-nnoremap                <leader>f       :Ack<SPACE>"<C-r><C-w>"<SPACE>
 nnoremap                <leader>vg      :vimgrep<SPACE>/<C-R><C-W>/<SPACE>**/*.*
 nnoremap <silent>       <leader>er      :vsplit ~/.vimrc<CR>
-nnoremap                <leader>st      :tag<SPACE>
 nnoremap                <leader>ccs     :colorscheme<SPACE>
 nnoremap <silent>       <ESC><ESC>      :nohlsearch<CR>
 
@@ -131,20 +128,13 @@ let g:NERDDefaultAlign = 'left'
 let g:NERDSpaceDelims = 1
 " }}}
 
-" {{{ CtrlP
-set wildignore+=*.swp,*.pyc
-let g:ctrlp_custom_ignore = 'build\|dist\|.git\|.env\|node_modules\|htmlcov\|target/html'
-
-nnoremap                <leader>bs      :CtrlPBufTag<CR>
-nnoremap                <leader>l       :CtrlPBuffer<CR>
-" }}}
-
 " {{{ YouCompleteMe
 " Following three configs make it compatible with the UltiSnips to work well.
 " let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 " let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 " let g:SuperTabDefaultCompletionType = '<C-n>'
 let g:ycm_enable_semantic_highlighting=1
+" TODO: add bash langserver
 let g:ycm_language_server = [
   \   {
   \     'name': 'python',
