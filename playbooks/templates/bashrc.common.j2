@@ -13,7 +13,6 @@ export PS1='[$(date +%H:%M:%S)] \w$(__git_ps1 " (%s)")> '
 if [ -e "/usr/bin/go" ]; then
     export GO111MODULE=on
     export GOPATH="{{ go_home }}"
-    export GOPROXY="{{ go_proxy }}"
 fi
 
 alias bat='bat --theme TwoDark'
