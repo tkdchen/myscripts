@@ -15,6 +15,7 @@ if [ -e "/usr/bin/go" ]; then
     export GOPATH="{{ go_home }}"
 fi
 
+alias f='fzf --preview="bat --color=always --theme=TwoDark {1}" --bind="j:down,k:up,ctrl-j:preview-down,ctrl-k:preview-up,alt-v:preview-page-down,alt-b:preview-page-up"'
 alias bat='bat --theme TwoDark'
 alias grep='grep --exclude=*.pyc --exclude=.git --exclude=.venv --color'
 alias k=kubectl
