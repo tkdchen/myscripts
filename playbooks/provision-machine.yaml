@@ -264,18 +264,6 @@
         - dotfiles
         - nvim-init
 
-    - name: Install bashrc.common
-      ansible.builtin.template:
-        src: bashrc.common.j2
-        dest: "{{ ansible_user_dir }}/.bashrc.common"
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-        mode: "u=rw,g=r,o=r"
-        backup: true
-      tags:
-        - dotfiles
-        - bashrc
-
     - name: Install bashrc
       ansible.builtin.template:
         src: bashrc.j2
@@ -284,20 +272,6 @@
         group: "{{ ansible_user }}"
         mode: "u=rw,g=r,o=r"
         backup: true
-      when: ansible_facts['system'] == "Linux"
-      tags:
-        - dotfiles
-        - bashrc
-
-    - name: Install bashrc
-      ansible.builtin.template:
-        src: bashrc.macos.j2
-        dest: "{{ ansible_user_dir }}/.bash_profile"
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-        mode: "u=rw,g=r,o=r"
-        backup: true
-      when: ansible_facts['system'] == "Darwin"
       tags:
         - dotfiles
         - bashrc

@@ -1,54 +1,143 @@
-# vim: foldmethod=marker ts=4 sw=4 autoindent ft=sh
+# vim: foldmethod=marker ts=4 sw=4 autoindent ft=bash
 # .bashrc
 
-if [ -f /etc/bashrc ]; then
-    . /etc/bashrc
+OS=$(uname)
+
+if [ "$OS" == "Linux" ]; then
+    if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+    fi
+
+    . /usr/share/git-core/contrib/completion/git-prompt.sh
 fi
 
-. /usr/share/git-core/contrib/completion/git-prompt.sh
-. ~/.bashrc.common
+PATHS=(
+    "$HOME/.local/bin"
+    "$HOME/bin"
+    "$HOME/npm/node_modules/.bin"
+)
 
-[ -e "~/.bashrc.extension" ] && source "~/.bashrc.extension"
+if [ -e "$HOME/.cargo/bin" ]; then
+    PATHS+=("$HOME/.cargo/bin")
+fi
 
-# User specific environment
+if [ "$OS" == "Darwin" ]; then
+    [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && \
+	. "/usr/local/etc/profile.d/bash_completion.sh"
 
-# This requires the /var mount point has enough disk space as a main storage
-# for the system.
-# Ensure it is writable by the user.
-export VAGRANT_HOME="{{ vagrant_home }}"
-if [ ! -e "$VAGRANT_HOME" ]; then
-    echo "${VAGRANT_HOME} does not exist."
-    echo "Create it before using vagrant and ensure it is accessible."
+    . /usr/local/Cellar/git/$(git version | cut -d' ' -f3)/etc/bash_completion.d/git-prompt.sh
+
+    PATHS+=(
+	"/usr/local/opt/findutils/libexec/gnubin"
+	"/usr/local/opt/gnu-sed/libexec/gnubin"
+	"/usr/local/opt/grep/libexec/gnubin"
+	"/usr/local/opt/krb5/bin"
+	"/usr/local/opt/krb5/sbin"
+	"/usr/local/opt/make/libexec/gnubin"
+	"{{ ansible_user_dir }}/Library/Python/{{ ansible_python.version.major }}.{{ ansible_python.version.minor }}/bin"
+    )
+
+    # Homebrew remote mirrors
+    export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
+    export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
+    export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles"
 fi
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 
-# User specific aliases and functions
+export GIT_EDITOR=vim
+# Required git-prompt.sh is sourced in OS-specific bashrc or bash_profile
+export GIT_PS1_SHOWDIRTYSTATE=1
+export PS1='[$(date +%H:%M:%S)] \w$(__git_ps1 " (%s)")> '
 
-# Added when starting to use a fresh Fedora 33 on new ThinkPad
-# What I did: install ibus manually and launch ibus-daemon manually.
-export GTK_IM_MODULE=ibus
-export QT_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
+export GO111MODULE=on
+export GOPATH="{{ go_home }}"
+PATHS+=("{{ go_home }}/bin")
 
-export REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
+# !!! Set all necessary paths before exporting from this line
+# Export all executable search paths
+CUSTOM_PATH=
+for item in ${PATHS[@]}; do
+    CUSTOM_PATH="${CUSTOM_PATH}${item}:"
+done
+export PATH="${CUSTOM_PATH}${PATH}"
 
-q-connect-network() {
-    local -r networkname=$(nmcli --fields name c show | sed '1 d' | sed -e 's/ \+$//' | fzf)
-    [[ -n "$networkname" ]] && nmcli --ask c up "$networkname"
+# This requires the /var mount point has enough disk space as a main storage
+# for the system.
+# Ensure it is writable by the user.
+export VAGRANT_HOME="{{ vagrant_home }}"
+export VAGRANT_LIBVIRT_IMAGES="{{ vagrant_libvirt_images_dir }}"
+
+alias f='fzf --preview="bat --color=always --theme=TwoDark {1}" --bind="j:down,k:up,ctrl-j:preview-down,ctrl-k:preview-up,alt-v:preview-page-down,alt-b:preview-page-up"'
+alias bat='bat --theme TwoDark'
+alias grep='grep --exclude=*.pyc --exclude=.git --exclude=.venv --color'
+alias k=kubectl
+alias onedrive_sync='onedrive --synchronize'
+alias pm=podman
+alias t=tkn
+
+alias g=git
+alias gita='git add'
+alias gitd='git diff'
+alias gitdiff='git diff'
+alias gitlog='git log'
+alias git-log-view='git log --oneline --branches --graph --decorate=auto'
+alias gits='git status'
+alias git-show-top-patch='git log -p -1'
+
+alias venvnew='${pybin:-python3} -m venv .venv'
+alias venvdrop='[ -e ".venv" ] && rm -r .venv'
+alias venvon='source ./.venv/bin/activate'
+alias venvoff='deactivate'
+alias venvi='python3 -m pip install'
+
+alias login-aliyun-vm-as-root='ssh root@aliyun-vm'
+alias login-aliyun-vm='ssh {{ aliyun_vm_user }}@aliyun-vm'
+
+pypi_download_source() {
+    python3 -m pip download --no-binary :all: --no-deps $@
+}
+
+g-stats-commit-count-by-author() {
+    git log --format="%an" | sort | uniq -c | sort -k1 -n --reverse
+}
+
+g-sync-up-with-upstream() {
+    local -r branch=${1:-master}
+    git fetch upstream
+    git checkout "$branch"
+    git merge "upstream/$branch"
 }
 
 pypi-mirrors-list() {
-    fast_pypi_mirros='https://pypi.tuna.tsinghua.edu.cn/simple
+    local -r fast_pypi_mirros='https://pypi.tuna.tsinghua.edu.cn/simple
 https://mirrors.aliyun.com/pypi/simple/
 https://pypi.doubanio.com/simple
 https://mirrors.cloud.tencent.com/pypi/simple'
     echo "$fast_pypi_mirros" | fzf
 }
 
-export VAGRANT_LIBVIRT_IMAGES="{{ vagrant_libvirt_images_dir }}"
-if [ ! -e "${VAGRANT_LIBVIRT_IMAGES}" ]; then
-    echo "${VAGRANT_LIBVIRT_IMAGES} does not exist."
-    echo "Create it before using vagrant with libvirt and ensure it is accessible."
+q-connect-network() {
+    if [ "$(uname)" != "Linux" ]; then
+	echo "Works for Linux only."
+	return
+    fi
+    local -r networkname=$(nmcli --fields name c show | sed '1 d' | sed -e 's/ \+$//' | fzf)
+    [[ -n "$networkname" ]] && nmcli --ask c up "$networkname"
+}
+
+if [ "$OS" == "Linux" ]; then
+    # Added when starting to use a fresh Fedora 33 on new ThinkPad
+    # What I did: install ibus manually and launch ibus-daemon manually.
+    export GTK_IM_MODULE=ibus
+    export QT_IM_MODULE=ibus
+    export XMODIFIERS=@im=ibus
+
+    export REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
+fi
+
+# Finally, source any extension on-the-fly
+if [ -f "~/.bashrc.onthefly" ]; then
+    . ~/.bashrc.onthefly
 fi
