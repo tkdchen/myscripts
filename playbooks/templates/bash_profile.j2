@@ -1,13 +1,16 @@
-# vim: foldmethod=marker ts=4 sw=4 autoindent ft=bash
-# .bashrc
+# /* -*- Mode: sh; tab-width: 4; indent-tabs-mode: nil -*- */
+# .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+    . ~/.bashrc
+fi
+
+# User specific environment and startup programs
 
 OS=$(uname)
 
 if [ "$OS" == "Linux" ]; then
-    if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
-    fi
-
     . /usr/share/git-core/contrib/completion/git-prompt.sh
 fi
 
@@ -19,18 +22,18 @@ PATHS=(
 
 if [ "$OS" == "Darwin" ]; then
     [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && \
-	. "/usr/local/etc/profile.d/bash_completion.sh"
+        . "/usr/local/etc/profile.d/bash_completion.sh"
 
     . /usr/local/Cellar/git/$(git version | cut -d' ' -f3)/etc/bash_completion.d/git-prompt.sh
 
     PATHS+=(
-	"/usr/local/opt/findutils/libexec/gnubin"
-	"/usr/local/opt/gnu-sed/libexec/gnubin"
-	"/usr/local/opt/grep/libexec/gnubin"
-	"/usr/local/opt/krb5/bin"
-	"/usr/local/opt/krb5/sbin"
-	"/usr/local/opt/make/libexec/gnubin"
-	"{{ ansible_user_dir }}/Library/Python/{{ ansible_python.version.major }}.{{ ansible_python.version.minor }}/bin"
+        "/usr/local/opt/findutils/libexec/gnubin"
+        "/usr/local/opt/gnu-sed/libexec/gnubin"
+        "/usr/local/opt/grep/libexec/gnubin"
+        "/usr/local/opt/krb5/bin"
+        "/usr/local/opt/krb5/sbin"
+        "/usr/local/opt/make/libexec/gnubin"
+        "{{ ansible_user_dir }}/Library/Python/{{ ansible_python.version.major }}.{{ ansible_python.version.minor }}/bin"
     )
 
     # Homebrew remote mirrors
@@ -133,7 +136,11 @@ if [ "$OS" == "Linux" ]; then
     export REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
 fi
 
+if [ -f "~/.cargo/env" ]; then . ~/.cargo/env; fi
+
 # Finally, source any extension on-the-fly
 if [ -f "~/.bashrc.onthefly" ]; then
     . ~/.bashrc.onthefly
 fi
+
+# vim: foldmethod=marker ts=4 sw=4 autoindent ft=bash

@@ -264,17 +264,17 @@
         - dotfiles
         - nvim-init
 
-    - name: Install bashrc
+    - name: Install bash_profile
       ansible.builtin.template:
-        src: bashrc.j2
-        dest: "{{ ansible_user_dir }}/.bashrc"
+        src: bash_profile.j2
+        dest: "{{ ansible_user_dir }}/.bash_profile"
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
         mode: "u=rw,g=r,o=r"
         backup: true
       tags:
         - dotfiles
-        - bashrc
+        - bash_profile
 
     - name: Homebrew - create working directory
       ansible.builtin.tempfile:
