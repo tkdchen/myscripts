@@ -1,27 +1,77 @@
 (require 'package)
-(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                         ("melpa" . "https://melpa.org/packages/")))
+;; (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+;;                          ("melpa" . "https://melpa.org/packages/")))
 
-(require 'evil)
-(require 'yaml-mode)
+(setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+                         ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+(package-initialize)
+
 (require 'base16-theme)
+(require 'evil)
+(require 'ivy)
+(require 'counsel)
+(require 'yaml-mode)
 (require 'yasnippet)
 
-(column-number-mode 1)
+(yas-global-mode 1)
+(ivy-mode 1)
+(counsel-mode 1)
 
-(setq-default indent-tabs-mode nil)
+(column-number-mode 1)
+(global-company-mode 1)
+(global-evil-leader-mode)
+(tool-bar-mode -1)
+
+(setq fill-column 79)
+(setq indent-tabs-mode nil)
+(setq inhibit-startup-screen t)
 (setq-default line-spacing 3)
-(set-frame-font "Hack 14" nil t)
+
+(set-frame-font "DejaVu Sans Mono 14" nil t)
+
+(global-set-key (kbd "C-<f3>") 'rgrep)
+(global-set-key (kbd "C-<f5>") 'display-line-numbers-mode)
+
+;; Key bindings for lsp-mode specifically. Only work after lsp-mode is loaded.
+;; Have no idea how to change lsp-mode key bindings in the lsp-mode hook.
+(global-set-key (kbd "C-<f12>") 'lsp-ivy-workspace-symbol)
+(global-set-key (kbd "C-c f r") 'lsp-find-references)
+
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "C-c n") 'counsel-fzf)
+(global-set-key (kbd "C-c g") 'counsel-git)
+(global-set-key (kbd "C-c t") 'counsel-load-theme)
 
 (evil-mode 1)
-(global-company-mode 1)
-(global-emojify-mode 1)
-(yas-global-mode 1)
+(evil-leader/set-leader ",")
+(evil-leader/set-key
+  "e" 'find-file
+  "b" 'switch-to-buffer
+  "k" 'kill-buffer
+  "gr" 'rgrep
+  "ci" 'evilnc-comment-or-uncomment-lines
+  "sl" 'sort-lines
+  "lfr" 'lsp-find-references
+  "lfs" 'lsp-ivy-workspace-symbol
+  )
 
-;; (load-theme 'base16-ashes t)
+(add-to-list 'auto-mode-alist
+             '("\\.ya?ml\\'" . yaml-mode))
+(add-to-list 'auto-mode-alist
+             '("Containerfile.*" . dockerfile-mode))
 
-
-;; (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+(add-hook 'lsp-mode-hook
+          (lambda ()
+            (setq lsp-modeline-diagnostics-enable t)
+            (setq lsp-modeline-diagnostics-scope :workspace)
+            (setq lsp-ui-sideline-show-diagnostics t)
+            ;; (setq lsp-headerline-breadcrumb-segments '(symbols))
+            ;; (setq lsp-headerline-breadcrumb-enable-symbol-numbers t)
+            (lsp-headerline-breadcrumb-mode 1)
+	    (setq lsp-modeline-code-actions-enable nil)
+	    (setq lsp-ui-sideline-enable nil)
+	    (setq lsp-ui-sideline-enable nil)
+            ))
 
 (add-hook 'conf-mode-hook
           (lambda ()
@@ -32,18 +82,18 @@
           (lambda ()
             (require 'lsp-pyright)
             (lsp)
+            (setq fill-column 79)
             ))
 
-(add-hook 'lsp-mode-hook
+(add-hook 'sh-mode-hook
           (lambda ()
-            (setq lsp-modeline-diagnostics-scope :workspace)
-            (lsp-headerline-breadcrumb-mode 1)
+            (require 'lsp-bash)
+            (lsp)
             ))
 
 (add-hook 'yaml-mode-hook
           (lambda ()
-            (setq yaml-indent-level 2)
-            (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+            (setq evil-shift-width 2)
             ))
 
 (add-hook 'js-mode-hook
@@ -68,28 +118,39 @@
             (lsp)
             ))
 
+(add-hook 'rust-mode-hook
+          (lambda ()
+            (lsp)
+            ))
+
+(add-hook 'makefile-mode-hook
+          (lambda ()
+            (setq tab-width 4)
+            ))
+
+(add-hook 'go-mode-hook
+          (lambda ()
+            (require 'lsp-go)
+            (lsp)
+	    (setq tab-width 4)
+            ))
+
+(add-hook 'c-mode-hook
+          (lambda ()
+            (require 'lsp-go)
+            (lsp)
+            ))
+
+(add-hook 'c++-mode-hook
+          (lambda ()
+            (require 'lsp-go)
+            (lsp)
+            ))
 
 (setq org-todo-keywords '((sequence "TODO" "DOING" "DONE")))
 (setq org-log-done 'time)
-(dolist (charset '(kana han symbol cjk-misc bopomofo))
-  (set-fontset-font (frame-parameter nil 'font)
-		    charset
-		    (font-spec :family "Noto Sans Mono CJK SC" :size 20)))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#1c2023" "#c7ae95" "#95c7ae" "#aec795" "#ae95c7" "#c795ae" "#ae95c7" "#c7ccd1"])
- '(custom-safe-themes
-   '("146061a7ceea4ccc75d975a3bb41432382f656c50b9989c7dc1a7bb6952f6eb4" default))
- '(package-selected-packages
-   '(yasnippet yasnippet-snippets go-mode yaml-mode lsp-ui lsp-pyright lsp-jedi lsp-ivy lsp-docker jenkinsfile-mode gruvbox-theme graphviz-dot-mode evil emojify dockerfile-mode company bind-key base16-theme)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;; (dolist (charset '(kana han symbol cjk-misc bopomofo))
+;;   (set-fontset-font (frame-parameter nil 'font)
+;; 		    charset
+;; 		    (font-spec :family "Source Han Mono SC N" :size 22)))
