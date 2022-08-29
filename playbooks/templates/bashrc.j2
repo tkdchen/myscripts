@@ -17,10 +17,6 @@ PATHS=(
     "$HOME/npm/node_modules/.bin"
 )
 
-if [ -e "$HOME/.cargo/bin" ]; then
-    PATHS+=("$HOME/.cargo/bin")
-fi
-
 if [ "$OS" == "Darwin" ]; then
     [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && \
 	. "/usr/local/etc/profile.d/bash_completion.sh"
